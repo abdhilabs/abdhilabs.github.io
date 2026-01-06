@@ -18,7 +18,7 @@ const HomePage = () => {
             className="w-20 h-20 rounded-full object-cover ring-2 ring-gray-100 dark:ring-gray-800"
           />
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-1">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
               {profileData.name}
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mb-2">{profileData.company}</p>
@@ -36,7 +36,7 @@ const HomePage = () => {
       {/* Recent Writing */}
       <section className="mb-16">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Recent Writing</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Writing</h2>
           <Link
             to="/blog"
             className="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group"
@@ -45,14 +45,14 @@ const HomePage = () => {
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
-        <div className="space-y-4">
+        <div className="space-y-1">
           {recentPosts.map((post) => (
             <Link
               key={post.id}
               to={`/blog/${post.slug}`}
               className="block group"
             >
-              <article className="p-4 -mx-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors duration-200">
+              <article className="p-4 -mx-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-900/80 transition-colors duration-200">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <h3 className="font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-1">
@@ -78,7 +78,7 @@ const HomePage = () => {
       {/* Featured Projects */}
       <section>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Featured Projects</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Featured Projects</h2>
           <Link
             to="/projects"
             className="flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors group"
@@ -87,11 +87,11 @@ const HomePage = () => {
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
-        <div className="space-y-3">
+        <div className="space-y-1">
           {featuredProjects.map((project) => (
             <div
               key={project.id}
-              className="p-4 -mx-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-900/50 transition-colors duration-200 group"
+              className="p-4 -mx-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-900/80 transition-colors duration-200 group"
             >
               <div className="flex items-center gap-4">
                 <span className="text-2xl" role="img" aria-label={project.name}>

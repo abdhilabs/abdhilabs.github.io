@@ -8,17 +8,17 @@ const ExperienceCard = ({ experience }) => {
   return (
     <div className="relative pl-6 pb-8 last:pb-0 group">
       {/* Timeline line */}
-      <div className="absolute left-0 top-2 bottom-0 w-px bg-gray-200 dark:bg-gray-700 group-last:hidden" />
+      <div className="absolute left-0 top-2 bottom-0 w-px bg-gray-200 dark:bg-gray-800 group-last:hidden" />
       {/* Timeline dot */}
-      <div className="absolute left-[-3px] top-2 w-[7px] h-[7px] rounded-full bg-gray-300 dark:bg-gray-600 group-hover:bg-blue-500 transition-colors" />
+      <div className="absolute left-[-3px] top-2 w-[7px] h-[7px] rounded-full bg-gray-300 dark:bg-gray-700 group-hover:bg-blue-500 transition-colors" />
       
       <div className="space-y-2">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h3 className="font-semibold text-gray-900 dark:text-gray-100">{experience.role}</h3>
+            <h3 className="font-semibold text-gray-900 dark:text-white">{experience.role}</h3>
             <p className="text-gray-600 dark:text-gray-400">{experience.company}</p>
           </div>
-          <span className="text-sm text-gray-400 dark:text-gray-500 whitespace-nowrap">
+          <span className="text-sm text-gray-400 dark:text-gray-600 whitespace-nowrap">
             {experience.period}
           </span>
         </div>
@@ -29,7 +29,7 @@ const ExperienceCard = ({ experience }) => {
           <ul className="space-y-1">
             {experience.highlights.map((highlight, index) => (
               <li key={index} className="text-sm text-gray-500 dark:text-gray-500 flex items-start gap-2">
-                <span className="text-gray-300 dark:text-gray-600 mt-1.5">•</span>
+                <span className="text-gray-300 dark:text-gray-700 mt-1.5">•</span>
                 {highlight}
               </li>
             ))}
@@ -45,10 +45,10 @@ const EducationCard = ({ education }) => {
     <div className="space-y-1">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h3 className="font-semibold text-gray-900 dark:text-gray-100">{education.degree}</h3>
+          <h3 className="font-semibold text-gray-900 dark:text-white">{education.degree}</h3>
           <p className="text-gray-600 dark:text-gray-400">{education.school}</p>
         </div>
-        <span className="text-sm text-gray-400 dark:text-gray-500 whitespace-nowrap">
+        <span className="text-sm text-gray-400 dark:text-gray-600 whitespace-nowrap">
           {education.period}
         </span>
       </div>
@@ -63,14 +63,14 @@ const ResumePage = () => {
   return (
     <div className="max-w-2xl mx-auto px-6 py-12 lg:py-16">
       <header className="mb-10">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Resume</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Resume</h1>
         <p className="text-gray-600 dark:text-gray-400 mb-4">
           A summary of my professional experience and education.
         </p>
         <Button
           variant="outline"
           size="sm"
-          className="gap-2 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+          className="gap-2 border-gray-200 dark:border-gray-800 dark:text-gray-300 dark:hover:bg-gray-900 dark:hover:text-white"
           onClick={() => window.open(`mailto:${profileData.social.email}`, '_blank')}
         >
           <Mail className="w-4 h-4" />
@@ -81,8 +81,8 @@ const ResumePage = () => {
       {/* Experience */}
       <section className="mb-12">
         <div className="flex items-center gap-2 mb-6">
-          <Briefcase className="w-5 h-5 text-gray-400 dark:text-gray-500" />
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Experience</h2>
+          <Briefcase className="w-5 h-5 text-gray-400 dark:text-gray-600" />
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Experience</h2>
         </div>
         <div className="ml-2">
           {resumeData.experience.map((exp) => (
@@ -94,8 +94,8 @@ const ResumePage = () => {
       {/* Education */}
       <section className="mb-12">
         <div className="flex items-center gap-2 mb-6">
-          <GraduationCap className="w-5 h-5 text-gray-400 dark:text-gray-500" />
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Education</h2>
+          <GraduationCap className="w-5 h-5 text-gray-400 dark:text-gray-600" />
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Education</h2>
         </div>
         <div className="space-y-4">
           {resumeData.education.map((edu) => (
@@ -107,17 +107,17 @@ const ResumePage = () => {
       {/* Skills */}
       <section>
         <div className="flex items-center gap-2 mb-6">
-          <svg className="w-5 h-5 text-gray-400 dark:text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg className="w-5 h-5 text-gray-400 dark:text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
           </svg>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Skills</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Skills</h2>
         </div>
         <div className="flex flex-wrap gap-2">
           {resumeData.skills.map((skill) => (
             <Badge
               key={skill}
               variant="secondary"
-              className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 font-normal"
+              className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 font-normal border-0"
             >
               {skill}
             </Badge>
