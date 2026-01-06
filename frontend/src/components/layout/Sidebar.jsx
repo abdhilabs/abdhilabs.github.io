@@ -68,24 +68,9 @@ const Sidebar = ({ isMobileOpen, onMobileToggle }) => {
         )}
       >
         <div className={cn(
-          "flex flex-col h-full p-6 transition-opacity duration-200",
+          "flex flex-col h-full p-6 pt-8 transition-opacity duration-200",
           isExpanded || isMobileOpen ? "opacity-100" : "lg:opacity-0"
         )}>
-          {/* Profile Section */}
-          <div className="mb-8 pt-2">
-            <div className="flex items-center gap-3 mb-4">
-              <img
-                src={profileData.avatar}
-                alt={profileData.name}
-                className="w-10 h-10 rounded-full object-cover ring-2 ring-gray-200 dark:ring-gray-800"
-              />
-              <div className="min-w-0">
-                <h1 className="font-semibold text-gray-900 dark:text-gray-100 text-sm truncate">{profileData.name}</h1>
-                <p className="text-xs text-gray-500 dark:text-gray-500 truncate">{profileData.title}</p>
-              </div>
-            </div>
-          </div>
-
           {/* Navigation */}
           <nav className="flex-1">
             <ul className="space-y-1">
