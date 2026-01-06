@@ -82,7 +82,8 @@ const Sidebar = ({ isOpen, onToggle }) => {
                     </NavLink>
                   </li>
                 );
-              })}n            </ul>
+              })}
+            </ul>
           </nav>
 
           {/* Social Links */}
