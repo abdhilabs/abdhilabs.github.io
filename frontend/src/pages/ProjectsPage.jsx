@@ -72,7 +72,7 @@ const ProjectsPage = () => {
       <header className="mb-10">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Projects</h1>
         <p className="text-gray-600 dark:text-gray-400">
-          A collection of apps and open source projects I've built over the years.
+          A collection of apps and open source projects I have built over the years.
         </p>
       </header>
 
