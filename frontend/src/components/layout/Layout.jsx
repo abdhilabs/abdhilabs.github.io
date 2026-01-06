@@ -16,7 +16,7 @@ const Layout = ({ children }) => {
       {/* Main Content */}
       <main className={cn(
         "min-h-screen transition-all duration-300",
-        isExpanded ? "lg:ml-64" : "lg:ml-0"
+        isExpanded ? "lg:ml-64" : "lg:ml-0 lg:pl-16"
       )}>
         <div className="pt-16 lg:pt-0">
           {children}
