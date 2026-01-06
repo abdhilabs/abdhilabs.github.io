@@ -5,7 +5,6 @@ import { blogPosts } from '../data/mock';
 import { cn } from '../lib/utils';
 
 const BlogList = ({ posts, selectedSlug }) => {
-  // Group posts by year
   const postsByYear = posts.reduce((acc, post) => {
     if (!acc[post.year]) acc[post.year] = [];
     acc[post.year].push(post);
@@ -18,10 +17,10 @@ const BlogList = ({ posts, selectedSlug }) => {
     <div className="space-y-8">
       {years.map((year) => (
         <div key={year}>
-          <h3 className="text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4">
+          <h3 className="text-sm font-semibold text-gray-400 dark:text-gray-600 uppercase tracking-wider mb-4">
             {year}
           </h3>
-          <div className="space-y-2">
+          <div className="space-y-1">
             {postsByYear[year].map((post) => (
               <Link
                 key={post.id}
@@ -29,8 +28,8 @@ const BlogList = ({ posts, selectedSlug }) => {
                 className={cn(
                   "block p-3 -mx-3 rounded-lg transition-all duration-200",
                   selectedSlug === post.slug
-                    ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
-                    : "hover:bg-gray-50 dark:hover:bg-gray-800/50 text-gray-900 dark:text-gray-100"
+                    ? "bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+                    : "hover:bg-gray-50 dark:hover:bg-gray-900/80 text-gray-900 dark:text-gray-100"
                 )}
               >
                 <h4 className="font-medium mb-1 line-clamp-2">{post.title}</h4>
@@ -60,7 +59,7 @@ const BlogPost = ({ post }) => {
 
   if (!post) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
+      <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-500">
         <p>Select a post to read</p>
       </div>
     );
@@ -77,10 +76,10 @@ const BlogPost = ({ post }) => {
       </button>
 
       <header className="mb-8">
-        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-4">
           {post.title}
         </h1>
-        <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+        <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-500">
           <time>
             {new Date(post.date).toLocaleDateString('en-US', {
               year: 'numeric',
@@ -99,7 +98,7 @@ const BlogPost = ({ post }) => {
         {post.content.split('\n\n').map((paragraph, index) => {
           if (paragraph.startsWith('## ')) {
             return (
-              <h2 key={index} className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-8 mb-4">
+              <h2 key={index} className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">
                 {paragraph.replace('## ', '')}
               </h2>
             );
@@ -132,15 +131,15 @@ const BlogPage = () => {
   return (
     <div className="min-h-screen">
       <div className="flex">
-        {/* Post List - Hidden on mobile when viewing a post */}
+        {/* Post List */}
         <div
           className={cn(
-            "w-full lg:w-80 lg:border-r border-gray-100 dark:border-gray-800 lg:h-screen lg:sticky lg:top-0 overflow-y-auto",
+            "w-full lg:w-80 lg:border-r border-gray-100 dark:border-gray-800/50 lg:h-screen lg:sticky lg:top-0 overflow-y-auto",
             slug ? "hidden lg:block" : "block"
           )}
         >
           <div className="p-6">
-            <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">Writing</h1>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Writing</h1>
             <BlogList posts={blogPosts} selectedSlug={slug} />
           </div>
         </div>
