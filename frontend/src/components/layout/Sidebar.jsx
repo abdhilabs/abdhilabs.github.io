@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Home, PenLine, Layers, FileText, Github, Twitter, Linkedin, Mail, Menu, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { profileData, navigationItems } from '../../data/mock';
