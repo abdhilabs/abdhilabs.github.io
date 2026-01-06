@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Clock } from 'lucide-react';
 import { blogPosts } from '../data/mock';
@@ -18,7 +18,7 @@ const BlogList = ({ posts, selectedSlug }) => {
     <div className="space-y-8">
       {years.map((year) => (
         <div key={year}>
-          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">
+          <h3 className="text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4">
             {year}
           </h3>
           <div className="space-y-2">
@@ -29,12 +29,12 @@ const BlogList = ({ posts, selectedSlug }) => {
                 className={cn(
                   "block p-3 -mx-3 rounded-lg transition-all duration-200",
                   selectedSlug === post.slug
-                    ? "bg-blue-50 text-blue-600"
-                    : "hover:bg-gray-50 text-gray-900"
+                    ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
+                    : "hover:bg-gray-50 dark:hover:bg-gray-800/50 text-gray-900 dark:text-gray-100"
                 )}
               >
                 <h4 className="font-medium mb-1 line-clamp-2">{post.title}</h4>
-                <div className="flex items-center gap-3 text-xs text-gray-500">
+                <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-500">
                   <time>
                     {new Date(post.date).toLocaleDateString('en-US', {
                       month: 'short',
@@ -60,7 +60,7 @@ const BlogPost = ({ post }) => {
 
   if (!post) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-500">
+      <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
         <p>Select a post to read</p>
       </div>
     );
@@ -70,17 +70,17 @@ const BlogPost = ({ post }) => {
     <article className="max-w-2xl">
       <button
         onClick={() => navigate('/blog')}
-        className="lg:hidden flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 mb-6 transition-colors"
+        className="lg:hidden flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 mb-6 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to posts
       </button>
 
       <header className="mb-8">
-        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
+        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
           {post.title}
         </h1>
-        <div className="flex items-center gap-4 text-sm text-gray-500">
+        <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
           <time>
             {new Date(post.date).toLocaleDateString('en-US', {
               year: 'numeric',
@@ -95,11 +95,11 @@ const BlogPost = ({ post }) => {
         </div>
       </header>
 
-      <div className="prose prose-gray max-w-none">
+      <div className="prose prose-gray dark:prose-invert max-w-none">
         {post.content.split('\n\n').map((paragraph, index) => {
           if (paragraph.startsWith('## ')) {
             return (
-              <h2 key={index} className="text-xl font-semibold text-gray-900 mt-8 mb-4">
+              <h2 key={index} className="text-xl font-semibold text-gray-900 dark:text-gray-100 mt-8 mb-4">
                 {paragraph.replace('## ', '')}
               </h2>
             );
@@ -107,7 +107,7 @@ const BlogPost = ({ post }) => {
           if (paragraph.startsWith('1. ') || paragraph.startsWith('- ')) {
             const items = paragraph.split('\n');
             return (
-              <ul key={index} className="list-disc list-inside space-y-2 my-4 text-gray-600">
+              <ul key={index} className="list-disc list-inside space-y-2 my-4 text-gray-600 dark:text-gray-400">
                 {items.map((item, i) => (
                   <li key={i}>{item.replace(/^[\d\-\.\s]+/, '')}</li>
                 ))}
@@ -115,7 +115,7 @@ const BlogPost = ({ post }) => {
             );
           }
           return (
-            <p key={index} className="text-gray-600 leading-relaxed mb-4">
+            <p key={index} className="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
               {paragraph}
             </p>
           );
@@ -135,12 +135,12 @@ const BlogPage = () => {
         {/* Post List - Hidden on mobile when viewing a post */}
         <div
           className={cn(
-            "w-full lg:w-80 lg:border-r border-gray-100 lg:h-screen lg:sticky lg:top-0 overflow-y-auto",
+            "w-full lg:w-80 lg:border-r border-gray-100 dark:border-gray-800 lg:h-screen lg:sticky lg:top-0 overflow-y-auto",
             slug ? "hidden lg:block" : "block"
           )}
         >
           <div className="p-6">
-            <h1 className="text-xl font-bold text-gray-900 mb-6">Writing</h1>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">Writing</h1>
             <BlogList posts={blogPosts} selectedSlug={slug} />
           </div>
         </div>
