@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-950 transition-colors duration-300">
       <Sidebar isOpen={sidebarOpen} onToggle={toggleSidebar} />
       
       {/* Main Content */}
