@@ -45,15 +45,14 @@ const Sidebar = ({ isMobileOpen, onMobileToggle }) => {
       <button
         onClick={() => setIsExpanded(!isExpanded)}
         className={cn(
-          "hidden lg:flex fixed top-4 z-50 items-center justify-center w-8 h-8 rounded-full",
+          "hidden lg:flex fixed top-4 left-4 z-50 items-center justify-center w-10 h-10 rounded-lg",
           "bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700",
           "text-gray-600 dark:text-gray-400 transition-all duration-300",
-          "border border-gray-200 dark:border-gray-700",
-          isExpanded ? "left-[232px]" : "left-4"
+          "border border-gray-200 dark:border-gray-700"
         )}
-        aria-label={isExpanded ? "Collapse sidebar" : "Expand sidebar"}
+        aria-label={isExpanded ? "Close sidebar" : "Open sidebar"}
       >
-        {isExpanded ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+        {isExpanded ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
       </button>
 
       {/* Sidebar */}
