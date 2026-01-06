@@ -101,3 +101,97 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Test the personal portfolio website with comprehensive checks including navigation, dark mode toggle, blog functionality, and responsive design"
+
+frontend:
+  - task: "Homepage Layout and Content"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/HomePage.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "Need to test homepage layout, sidebar navigation, profile info, recent writing section, and featured projects section"
+
+  - task: "Navigation Functionality"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/layout/Sidebar.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "Need to test sidebar navigation links to Blog, Projects, and Resume pages"
+
+  - task: "Dark Mode Toggle"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/layout/ThemeToggle.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "Need to test dark mode toggle functionality and theme persistence"
+
+  - task: "Blog Page and Detail View"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/BlogPage.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "Need to test blog list page with posts grouped by year and individual blog post detail view"
+
+  - task: "Projects Page"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/ProjectsPage.jsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "Need to test projects page with featured and other sections"
+
+  - task: "Resume Page"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/ResumePage.jsx"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        -working: "NA"
+        -agent: "testing"
+        -comment: "Need to test resume page with experience timeline, education, and skills"
+
+metadata:
+  created_by: "testing_agent"
+  version: "1.0"
+  test_sequence: 1
+
+test_plan:
+  current_focus:
+    - "Homepage Layout and Content"
+    - "Navigation Functionality"
+    - "Dark Mode Toggle"
+    - "Blog Page and Detail View"
+  stuck_tasks: []
+  test_all: true
+  test_priority: "high_first"
+
+agent_communication:
+    -agent: "testing"
+    -message: "Starting comprehensive testing of personal portfolio website. Will test homepage, navigation, dark mode, blog functionality, projects page, and resume page."
