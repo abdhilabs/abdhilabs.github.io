@@ -90,16 +90,18 @@ const BlogPost = ({ post }) => {
       </header>
 
       <div className="prose prose-gray dark:prose-invert max-w-none
-        prose-headings:text-gray-900 dark:prose-headings:text-white
-        prose-h2:text-xl prose-h2:font-semibold prose-h2:mt-8 prose-h2:mb-4
-        prose-h3:text-lg prose-h3:font-semibold prose-h3:mt-6 prose-h3:mb-3
-        prose-p:text-gray-600 dark:prose-p:text-gray-400 prose-p:leading-relaxed prose-p:mb-4
-        prose-li:text-gray-600 dark:prose-li:text-gray-400
-        prose-strong:text-gray-900 dark:prose-strong:text-gray-200
-        prose-code:text-gray-800 dark:prose-code:text-gray-300 prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded
-        prose-pre:bg-gray-900 dark:prose-pre:bg-gray-900 prose-pre:text-gray-100
-        prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
+        prose-headings:font-semibold
+        prose-h2:text-xl prose-h2:mt-8 prose-h2:mb-4 prose-h2:text-gray-900 dark:prose-h2:text-white
+        prose-h3:text-lg prose-h3:mt-6 prose-h3:mb-3 prose-h3:text-gray-900 dark:prose-h3:text-white
+        prose-p:text-gray-600 dark:prose-p:text-gray-400 prose-p:leading-relaxed prose-p:my-4
+        prose-li:text-gray-600 dark:prose-li:text-gray-400 prose-li:my-1
         prose-ul:my-4 prose-ol:my-4
+        prose-strong:text-gray-900 dark:prose-strong:text-white prose-strong:font-semibold
+        prose-code:text-sm prose-code:font-mono prose-code:text-gray-800 dark:prose-code:text-gray-200 prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none
+        prose-pre:bg-gray-900 dark:prose-pre:bg-gray-950 prose-pre:text-gray-100 prose-pre:rounded-lg prose-pre:my-6 prose-pre:p-4 prose-pre:overflow-x-auto
+        prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline prose-a:font-medium
+        prose-blockquote:border-l-4 prose-blockquote:border-gray-300 dark:prose-blockquote:border-gray-700 prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-600 dark:prose-blockquote:text-gray-400
+        prose-hr:border-gray-200 dark:prose-hr:border-gray-800
       ">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>
           {post.content}
