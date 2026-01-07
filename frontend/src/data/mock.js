@@ -22,59 +22,6 @@ export const profileData = {
 // 3. Add the filename to /public/blog/posts.json
 // Reading time is calculated automatically based on word count
 
-export const blogPosts = [
-  {
-    id: "1",
-    slug: "building-better-ios-apps",
-    title: "Building Better iOS Apps with SwiftUI",
-    excerpt: "Lessons learned from migrating a large UIKit codebase to SwiftUI, and why it was worth the effort.",
-    content: `SwiftUI has fundamentally changed how we build iOS applications. After spending the last year migrating our main app from UIKit to SwiftUI, I wanted to share some lessons learned.\n\n## The Good\n\nSwiftUI's declarative syntax makes UI code significantly more readable. What used to take 100 lines of UIKit code can often be expressed in 20 lines of SwiftUI.\n\n## The Challenges\n\nNot everything was smooth sailing. We encountered issues with:\n- Navigation complexity in larger apps\n- Performance with large lists\n- Interoperability with existing UIKit components\n\n## Key Takeaways\n\n1. Start with new features, not rewrites\n2. Build a strong component library\n3. Embrace the declarative mindset\n\nOverall, the investment has paid off in developer productivity and code maintainability.`,
-    date: "2025-06-15",
-    year: "2025",
-    readTime: "8 min read"
-  },
-  {
-    id: "2",
-    slug: "design-systems-mobile",
-    title: "Design Systems for Mobile Applications",
-    excerpt: "How we built a scalable design system that works across iOS, Android, and web platforms.",
-    content: `A design system is more than just a component library. It's a shared language between designers and developers that ensures consistency across your product.\n\n## Our Approach\n\nWe started by auditing our existing components and identifying patterns. This revealed:\n- 47 different button styles\n- 12 variations of input fields\n- Inconsistent spacing throughout the app\n\n## The Solution\n\nWe created a token-based system that defines:\n- Colors and themes\n- Typography scales\n- Spacing units\n- Component variants\n\nThis allowed us to maintain consistency while still allowing flexibility for edge cases.`,
-    date: "2025-04-22",
-    year: "2025",
-    readTime: "6 min read"
-  },
-  {
-    id: "3",
-    slug: "performance-optimization",
-    title: "iOS Performance Optimization Deep Dive",
-    excerpt: "Techniques for identifying and fixing performance bottlenecks in iOS applications.",
-    content: `Performance isn't just about speed—it's about creating a responsive experience that users trust.\n\n## Measuring Performance\n\nBefore optimizing, you need to measure. We use:\n- Instruments for profiling\n- Custom metrics for business-critical flows\n- Real-device testing across generations\n\n## Common Bottlenecks\n\n1. **Main thread blocking**: Move heavy work off the main thread\n2. **Memory pressure**: Profile and reduce allocations\n3. **Network latency**: Implement proper caching strategies\n\n## Results\n\nAfter three months of focused optimization, we reduced app launch time by 40% and eliminated 90% of frame drops.`,
-    date: "2025-02-10",
-    year: "2025",
-    readTime: "10 min read"
-  },
-  {
-    id: "4",
-    slug: "swift-concurrency",
-    title: "Embracing Swift Concurrency",
-    excerpt: "A practical guide to async/await and actors in real-world iOS development.",
-    content: `Swift Concurrency represents a major shift in how we write asynchronous code. Here's how we've adopted it in production.\n\n## From Callbacks to Async/Await\n\nThe transformation is dramatic. Code that was once nested callbacks is now linear and readable.\n\n## Actors for Thread Safety\n\nActors have eliminated entire categories of bugs related to data races. We've converted our core data managers to actors with excellent results.\n\n## Migration Strategy\n\nWe took an incremental approach, starting with new code and gradually migrating existing async operations.`,
-    date: "2024-11-05",
-    year: "2024",
-    readTime: "7 min read"
-  },
-  {
-    id: "5",
-    slug: "career-growth-engineering",
-    title: "Growing as a Senior Engineer",
-    excerpt: "Reflections on what it means to be senior and how to continue growing in your career.",
-    content: `After five years in the industry, I've been reflecting on what "senior" really means and how to keep growing.\n\n## Beyond Code\n\nSeniority isn't just about writing better code. It's about:\n- Mentoring others\n- Making technical decisions\n- Communicating effectively\n- Understanding business context\n\n## Continuous Learning\n\nThe tech industry moves fast. I dedicate time each week to:\n- Reading technical papers\n- Experimenting with new technologies\n- Contributing to open source\n\n## Finding Your Path\n\nThere's no single path to growth. Some become managers, others go deep technically. The key is intentionality.`,
-    date: "2024-08-20",
-    year: "2024",
-    readTime: "5 min read"
-  }
-];
-
 export const resumeData = {
   experience: [
     {
