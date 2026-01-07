@@ -1,10 +1,14 @@
 import React from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Clock } from 'lucide-react';
-import { blogPosts } from '../data/mock';
+import { ArrowLeft, Clock, Loader2 } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import useBlogPosts from '../hooks/useBlogPosts';
 import { cn } from '../lib/utils';
+import { formatDate } from '../utils/blogUtils';
 
 const BlogList = ({ posts, selectedSlug }) => {
+  // Group posts by year
   const postsByYear = posts.reduce((acc, post) => {
     if (!acc[post.year]) acc[post.year] = [];
     acc[post.year].push(post);
@@ -35,10 +39,7 @@ const BlogList = ({ posts, selectedSlug }) => {
                 <h4 className="font-medium mb-1 line-clamp-2">{post.title}</h4>
                 <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-500">
                   <time>
-                    {new Date(post.date).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric'
-                    })}
+                    {formatDate(post.date, { month: 'short', day: 'numeric', year: undefined })}
                   </time>
                   <span className="flex items-center gap-1">
                     <Clock className="w-3 h-3" />
@@ -80,13 +81,7 @@ const BlogPost = ({ post }) => {
           {post.title}
         </h1>
         <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-gray-500">
-          <time>
-            {new Date(post.date).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric'
-            })}
-          </time>
+          <time>{formatDate(post.date)}</time>
           <span className="flex items-center gap-1">
             <Clock className="w-4 h-4" />
             {post.readTime}
@@ -94,31 +89,21 @@ const BlogPost = ({ post }) => {
         </div>
       </header>
 
-      <div className="prose prose-gray dark:prose-invert max-w-none">
-        {post.content.split('\n\n').map((paragraph, index) => {
-          if (paragraph.startsWith('## ')) {
-            return (
-              <h2 key={index} className="text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">
-                {paragraph.replace('## ', '')}
-              </h2>
-            );
-          }
-          if (paragraph.startsWith('1. ') || paragraph.startsWith('- ')) {
-            const items = paragraph.split('\n');
-            return (
-              <ul key={index} className="list-disc list-inside space-y-2 my-4 text-gray-600 dark:text-gray-400">
-                {items.map((item, i) => (
-                  <li key={i}>{item.replace(/^[\d\-\.\s]+/, '')}</li>
-                ))}
-              </ul>
-            );
-          }
-          return (
-            <p key={index} className="text-gray-600 dark:text-gray-400 leading-relaxed mb-4">
-              {paragraph}
-            </p>
-          );
-        })}
+      <div className="prose prose-gray dark:prose-invert max-w-none
+        prose-headings:text-gray-900 dark:prose-headings:text-white
+        prose-h2:text-xl prose-h2:font-semibold prose-h2:mt-8 prose-h2:mb-4
+        prose-h3:text-lg prose-h3:font-semibold prose-h3:mt-6 prose-h3:mb-3
+        prose-p:text-gray-600 dark:prose-p:text-gray-400 prose-p:leading-relaxed prose-p:mb-4
+        prose-li:text-gray-600 dark:prose-li:text-gray-400
+        prose-strong:text-gray-900 dark:prose-strong:text-gray-200
+        prose-code:text-gray-800 dark:prose-code:text-gray-300 prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded
+        prose-pre:bg-gray-900 dark:prose-pre:bg-gray-900 prose-pre:text-gray-100
+        prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-a:no-underline hover:prose-a:underline
+        prose-ul:my-4 prose-ol:my-4
+      ">
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          {post.content}
+        </ReactMarkdown>
       </div>
     </article>
   );
@@ -126,7 +111,24 @@ const BlogPost = ({ post }) => {
 
 const BlogPage = () => {
   const { slug } = useParams();
-  const selectedPost = slug ? blogPosts.find(p => p.slug === slug) : null;
+  const { posts, loading, error } = useBlogPosts();
+  const selectedPost = slug ? posts.find(p => p.slug === slug) : null;
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-red-500">
+        <p>Error loading posts: {error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
@@ -140,7 +142,7 @@ const BlogPage = () => {
         >
           <div className="p-6">
             <h1 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Writing</h1>
-            <BlogList posts={blogPosts} selectedSlug={slug} />
+            <BlogList posts={posts} selectedSlug={slug} />
           </div>
         </div>
 

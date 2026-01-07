@@ -1,10 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, MapPin } from 'lucide-react';
-import { profileData, blogPosts, projectsData } from '../data/mock';
+import { profileData, projectsData } from '../data/mock';
+import useBlogPosts from '../hooks/useBlogPosts';
+import { formatDate } from '../utils/blogUtils';
 
 const HomePage = () => {
-  const recentPosts = blogPosts.slice(0, 3);
+  const { posts, loading } = useBlogPosts();
+  const recentPosts = posts.slice(0, 3);
   const featuredProjects = projectsData.filter(p => p.featured).slice(0, 3);
 
   return (
@@ -46,32 +49,33 @@ const HomePage = () => {
           </Link>
         </div>
         <div className="space-y-1">
-          {recentPosts.map((post) => (
-            <Link
-              key={post.id}
-              to={`/blog/${post.slug}`}
-              className="block group"
-            >
-              <article className="p-4 -mx-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-900/80 transition-colors duration-200">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-1">
-                      {post.title}
-                    </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-500 line-clamp-1">
-                      {post.excerpt}
-                    </p>
+          {loading ? (
+            <div className="text-gray-500 dark:text-gray-500">Loading posts...</div>
+          ) : (
+            recentPosts.map((post) => (
+              <Link
+                key={post.id}
+                to={`/blog/${post.slug}`}
+                className="block group"
+              >
+                <article className="p-4 -mx-4 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-900/80 transition-colors duration-200">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-medium text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-1">
+                        {post.title}
+                      </h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-500 line-clamp-1">
+                        {post.excerpt}
+                      </p>
+                    </div>
+                    <time className="text-sm text-gray-400 dark:text-gray-600 whitespace-nowrap">
+                      {formatDate(post.date, { month: 'short', day: 'numeric', year: undefined })}
+                    </time>
                   </div>
-                  <time className="text-sm text-gray-400 dark:text-gray-600 whitespace-nowrap">
-                    {new Date(post.date).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric'
-                    })}
-                  </time>
-                </div>
-              </article>
-            </Link>
-          ))}
+                </article>
+              </Link>
+            ))
+          )}
         </div>
       </section>
 
