@@ -15,6 +15,13 @@ export const profileData = {
   }
 };
 
+// Blog posts are now loaded from markdown files in /public/blog/
+// To add a new post:
+// 1. Create a new .md file in /public/blog/
+// 2. Add frontmatter with title, excerpt, and date
+// 3. Add the filename to /public/blog/posts.json
+// Reading time is calculated automatically based on word count
+
 export const blogPosts = [
   {
     id: "1",
