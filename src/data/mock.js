@@ -85,6 +85,18 @@ export const projectsData = [
     github: "https://github.com/abdhilabs/GameRAW",
     tech: ["Swift", "SwiftUI", "Core Data", "SPM", "Modularization", "Dependency Injection"],
     featured: true
+  },
+  {
+    id: "2",
+    name: "Socgent",
+    tagline: "Capture, tag, and reuse social links fast.",
+    description:
+      "A lightweight iOS app to capture a social link or handle, tag it by platform, and keep a recent list for quick reuse. Features: quick platform chips, recent list with tap-to-use and delete, and light/dark theme toggle.",
+    icon: "🔗",
+    link: "https://github.com/abdhilabs/Socgent",
+    github: "https://github.com/abdhilabs/Socgent",
+    tech: ["SwiftUI", "The Composable Architecture (TCA)", "SwiftData", "Moya", "SwiftLint", "XcodeGen"],
+    featured: true
   }
 ];
 
