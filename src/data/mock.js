@@ -6,7 +6,7 @@ export const profileData = {
   company: "Building apps at NBS(nbs.co.id)",
   location: "Bandung, Indonesia",
   bio: "I'm an iOS engineer passionate about building <b class=\"font-semibold text-gray-900 dark:text-gray-200\">seamless, high-performance apps</b> that prioritize <b class=\"font-semibold text-gray-900 dark:text-gray-200\">user experience</b>, while ensuring <b class=\"font-semibold text-gray-900 dark:text-gray-200\">clean, maintainable code</b>. Known for a <b class=\"font-semibold text-gray-900 dark:text-gray-200\">meticulous approach to best practices</b> and delivering <b class=\"font-semibold text-gray-900 dark:text-gray-200\">efficient, scalable, and well-structured solutions</b>. Over the past <b class=\"font-semibold text-gray-900 dark:text-gray-200\">4 years</b>, I’ve delivered and maintained iOS apps across <b class=\"font-semibold text-gray-900 dark:text-gray-200\">banking, e-commerce, fintech, media, and news</b>.",
-  avatar: "https://media.licdn.com/dms/image/v2/C5103AQEXDfWt-INtIg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1582125181592?e=1769040000&v=beta&t=lxiif39ffUkWVNdDtgU-008ytoDgeAyAiZHFiE2xfNk",
+  avatar: "images/img-avatar.webp",
   social: {
     twitter: "https://twitter.com/mrdhip",
     github: "https://github.com/abdhilabs",
