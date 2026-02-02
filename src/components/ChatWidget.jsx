@@ -2,13 +2,31 @@ import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react';
 import { cn } from '../lib/utils';
 
+// Initial greeting message
+const INITIAL_GREETING = "Hai! 👋 Saya Anak Intern, asisten digital Abdhi. Tanya aja tentang:\n\n• Pengalaman kerja & career\n• Skills & expertise\n• Education & background\n• Awards & achievements\n• Cara menghubungi\n\nApa yang ingin kamu tahu?";
+
+// Fallback responses when API is unavailable
+const FALLBACK_RESPONSES = {
+  experience: "**Pengalaman Abdhi:**\n\n📱 Mobile Engineer - iOS @ NBS (Jul 2021 - Sekarang)\n📱 Mobile Developer @ HEPTACO (Dec 2020 - Jun 2021)\n📱 iOS/Android Developer @ KECILIN\n📱 Android Developer @ Widya Edu, Credeva, Teman Kajian\n\n4+ tahun pengalaman di mobile development!",
+  
+  skills: "**Tech Skills:**\n\n🍎 iOS: Swift, SwiftUI, Clean Architecture\n🤖 Android: Kotlin, Java\n🎯 Focus: Mobile architecture, UX, Clean code\n\nCertified dari Apple Developer Academy!",
+  
+  education: "**Education:**\n\n🍎 Apple Developer Academy @ Infinite Learning (2022)\n🎓 AMIKOM Yogyakarta - Informatika, GPA 3.61\n🎓 Bangkit Academy led by Google (2021)\n📚 Dicoding Academy - Android & iOS Path",
+  
+  awards: "**Awards:**\n\n🏆 ASEAN Outstanding Invention Award (Thailand 2020)\n🥇 Gold Medal - Asian Youth Innovation (Malaysia 2020)\n🥇 Gold Medal - Thailand Inventors Day 2020\n🏅 1st Winner IT Competition IFest 2020",
+  
+  contact: "**Contact Abdhi:**\n\n💼 LinkedIn: linkedin.com/in/rizaabdhi\n💻 GitHub: github.com/abdhilabs\n🌐 Website: abdhilabs.com",
+  
+  default: "Hmm, koneksi lagi bermasalah 😅\n\nCoba tanya lagi ya! Atau langsung hubungi via LinkedIn:\nlinkedin.com/in/rizaabdhi"
+};
+
 const ChatWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
       id: 1,
       role: 'bot',
-      content: "Hai! I'm Abdhi's AI assistant. Ask me anything about him - his experience, skills, projects, or how to reach out!",
+      content: INITIAL_GREETING,
       timestamp: new Date()
     }
   ]);
@@ -23,6 +41,28 @@ const ChatWidget = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages, isOpen]);
+
+  const getFallbackResponse = (message) => {
+    const lowerMessage = message.toLowerCase();
+    
+    if (lowerMessage.includes('pengalaman') || lowerMessage.includes('experience') || lowerMessage.includes('kerja')) {
+      return FALLBACK_RESPONSES.experience;
+    }
+    if (lowerMessage.includes('skill') || lowerMessage.includes('keahlian') || lowerMessage.includes('tech')) {
+      return FALLBACK_RESPONSES.skills;
+    }
+    if (lowerMessage.includes('pendidikan') || lowerMessage.includes('education') || lowerMessage.includes('kuliah')) {
+      return FALLBACK_RESPONSES.education;
+    }
+    if (lowerMessage.includes('award') || lowerMessage.includes('penghargaan') || lowerMessage.includes('juara')) {
+      return FALLBACK_RESPONSES.awards;
+    }
+    if (lowerMessage.includes('contact') || lowerMessage.includes('hubungi') || lowerMessage.includes('linkedin')) {
+      return FALLBACK_RESPONSES.contact;
+    }
+    
+    return FALLBACK_RESPONSES.default;
+  };
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -48,22 +88,30 @@ const ChatWidget = () => {
         })
       });
 
+      if (!response.ok) {
+        throw new Error('API request failed');
+      }
+
       const data = await response.json();
 
       const botMessage = {
         id: Date.now() + 1,
         role: 'bot',
-        content: data.response || "Maaf, saya sedang mengalami gangguan. Coba lagi ya!",
+        content: data.response || getFallbackResponse(userMessage.content),
         timestamp: new Date()
       };
 
       setMessages(prev => [...prev, botMessage]);
     } catch (error) {
       console.error('Chat error:', error);
+      
+      // Use fallback response based on message content
+      const fallbackResponse = getFallbackResponse(userMessage.content);
+      
       const errorMessage = {
         id: Date.now() + 1,
         role: 'bot',
-        content: "Maaf, terjadi kesalahan. Silakan coba lagi!",
+        content: fallbackResponse,
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessage]);
@@ -123,8 +171,8 @@ const ChatWidget = () => {
               <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white dark:border-gray-900 rounded-full"></span>
             </div>
             <div>
-              <h3 className="font-semibold text-white dark:text-black text-sm">Abdhi's AI</h3>
-              <p className="text-xs text-gray-300 dark:text-gray-400">Personal Brand Assistant</p>
+              <h3 className="font-semibold text-white dark:text-black text-sm">Anak Intern</h3>
+              <p className="text-xs text-gray-300 dark:text-gray-400">Personal Assistant</p>
             </div>
           </div>
           <button
@@ -164,7 +212,7 @@ const ChatWidget = () => {
                   ? "bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-tl-none"
                   : "bg-black dark:bg-white text-white dark:text-black rounded-tr-none"
               )}>
-                <p className="text-sm leading-relaxed">{message.content}</p>
+                <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
                 <p className={cn(
                   "text-xs mt-1",
                   message.role === 'bot'

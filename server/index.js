@@ -19,7 +19,6 @@ try {
   console.log('✅ Knowledge base loaded');
 } catch (error) {
   console.warn('⚠️ Knowledge base not found');
-  knowledgeBase = '';
 }
 
 // ============ ENHANCED PATTERN MATCHING SYSTEM ============
@@ -39,7 +38,7 @@ const qaPatterns = [
     id: 'about',
     keywords: ['siapa', 'about', 'profile', 'perkenalkan', 'kenalan', 'abdhi itu siapa', 'dia siapa', 'nama', 'fullname', 'nama lengkap'],
     responses: [
-      "**Muhamad Riza Abdhi Purnama** adalah iOS Developer dengan **4+ tahun pengalaman** dalam membangun aplikasi mobile berkualitas.\n\nPassion-nya: building seamless, high-performance apps yang memprioritaskan user experience dengan clean, maintainable code. Selaluup-to-date dengan latest tech trends! 🚀",
+      "**Muhamad Riza Abdhi Purnama** adalah iOS Developer dengan **4+ tahun pengalaman** dalam membangun aplikasi mobile berkualitas.\n\nPassion-nya: building seamless, high-performance apps yang memprioritaskan user experience dengan clean, maintainable code. Selalu up-to-date dengan latest tech trends! 🚀",
       "Abdhi adalah Mobile Engineer yang meticulous, passionate tentang best practices, dan terus berkembang di dunia iOS development. Alumni Apple Developer Academy 2022! 🍎"
     ]
   },
@@ -197,14 +196,66 @@ function generateResponse(message) {
     return responses[Math.floor(Math.random() * responses.length)];
   }
 
-  // Fallback responses
-  const fallbacks = [
-    "Hmm, belum terlalu paham pertanyaan itu 😅\n\nTapi saya bisa bantu tentang:\n• About & background\n• Work experience\n• Skills & expertise\n• Education & awards\n• Contact info\n\nCoba pertanyaan lain ya! 😊",
-    "Maaf, saya kurang yakin maksudmu 🤔\n\nTapi tenang, saya bisa jawab tentang Abdhi!\nTanya tentang experience, skills, education, projects, atau cara menghubungi! 💬",
-    "Belum ngerti nih 😅\n\nMau tahu apa tentang Abdhi? Coba:\n• \"Apa experience-nya?\"\n• \"Skill apa aja?\"\n• \"Education di mana?\"\n• \"Cara hubungi?\""
-  ];
+  // Fallback responses with context-aware suggestions
+  const lowerMessage = message.toLowerCase();
+  
+  if (lowerMessage.includes('pengalaman') || lowerMessage.includes('experience') || lowerMessage.includes('kerja')) {
+    return `**Pengalaman Abdhi:**
 
-  return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+📱 Mobile Engineer - iOS @ NBS (Jul 2021 - Sekarang)
+📱 Mobile Developer @ HEPTACO (Dec 2020 - Jun 2021)
+📱 iOS/Android Developer @ KECILIN
+📱 Android Developer @ Widya Edu, Credeva, Teman Kajian
+
+4+ tahun pengalaman di mobile development!`;
+  }
+  
+  if (lowerMessage.includes('skill') || lowerMessage.includes('keahlian') || lowerMessage.includes('tech')) {
+    return `**Tech Skills:**
+
+🍎 iOS: Swift, SwiftUI, Clean Architecture
+🤖 Android: Kotlin, Java
+🎯 Focus: Mobile architecture, UX, Clean code
+
+Certified dari Apple Developer Academy!`;
+  }
+  
+  if (lowerMessage.includes('pendidikan') || lowerMessage.includes('education') || lowerMessage.includes('kuliah')) {
+    return `**Education:**
+
+🍎 Apple Developer Academy @ Infinite Learning (2022)
+🎓 AMIKOM Yogyakarta - Informatika, GPA 3.61
+🎓 Bangkit Academy led by Google (2021)
+📚 Dicoding Academy - Android & iOS Path`;
+  }
+  
+  if (lowerMessage.includes('award') || lowerMessage.includes('penghargaan') || lowerMessage.includes('juara')) {
+    return `**Awards:**
+
+🏆 ASEAN Outstanding Invention Award (Thailand 2020)
+🥇 Gold Medal - Asian Youth Innovation (Malaysia 2020)
+🥇 Gold Medal - Thailand Inventors Day 2020
+🏅 1st Winner IT Competition IFest 2020`;
+  }
+  
+  if (lowerMessage.includes('contact') || lowerMessage.includes('hubungi') || lowerMessage.includes('linkedin')) {
+    return `**Contact Abdhi:**
+
+💼 LinkedIn: linkedin.com/in/rizaabdhi
+💻 GitHub: github.com/abdhilabs
+🌐 Website: abdhilabs.com`;
+  }
+
+  // Default fallback
+  return `Hmm, belum terlalu paham pertanyaan itu 😅
+
+Tapi saya bisa bantu tentang:
+• Pengalaman kerja
+• Skills & expertise
+• Education & awards
+• Contact info
+
+Coba pertanyaan lain ya! 😊`;
 }
 
 // ============ API ENDPOINTS ============
@@ -244,7 +295,7 @@ app.post('/api/chat', async (req, res) => {
 app.get('/api/topics', (req, res) => {
   const topics = qaPatterns.map(p => ({
     id: p.id,
-    keywords: p.keywords.slice(0, 3) // First 3 keywords as examples
+    keywords: p.keywords.slice(0, 3)
   }));
   res.json({ topics });
 });
