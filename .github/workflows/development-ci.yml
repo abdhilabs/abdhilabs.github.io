@@ -1,8 +1,8 @@
-name: Chatbot CI
+name: Development CI
 
 on:
   push:
-    branches: [main, feature/chatbot]
+    branches-ignore: [main]
   pull_request:
     branches: [main]
 
