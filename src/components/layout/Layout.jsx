@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import { useSidebar } from '../../context/ThemeContext';
 import { cn } from '../../lib/utils';
+import ChatWidget from '../ChatWidget';
 
 const Layout = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -22,6 +23,9 @@ const Layout = ({ children }) => {
           {children}
         </div>
       </main>
+
+      {/* Chat Widget */}
+      <ChatWidget />
     </div>
   );
 };
