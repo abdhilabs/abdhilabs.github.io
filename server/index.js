@@ -337,11 +337,13 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🤖 Chat API v2.0 running on port ${PORT}`);
-  console.log(`   Health: http://localhost:${PORT}/api/health`);
-  console.log(`   Topics: http://localhost:${PORT}/api/topics`);
-});
+// Start server (only when run directly, not when imported for tests)
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🤖 Chat API v2.0 running on port ${PORT}`);
+    console.log(`   Health: http://localhost:${PORT}/api/health`);
+    console.log(`   Topics: http://localhost:${PORT}/api/topics`);
+  });
+}
 
 module.exports = app;
