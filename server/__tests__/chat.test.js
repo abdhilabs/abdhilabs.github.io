@@ -145,9 +145,7 @@ describe('Chat API', () => {
           .send({ message: query });
         
         expect(res.status).toBe(200);
-        expect(res.body.response).toContain('linkedin') ||
-               expect(res.body.response).toContain('github') ||
-               expect(res.body.response).toContain('contact');
+        expect(res.body.response.toLowerCase()).toMatch(/linkedin|github|contact/i);
       }
     });
 
