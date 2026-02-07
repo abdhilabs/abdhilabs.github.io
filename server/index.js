@@ -1,14 +1,37 @@
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const fs = require('fs');
 const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 3002;
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// ============ SECURITY MIDDLEWARE ============
+
+// CORS - Restrict to production domain
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? 'https://abdhilabs.com' 
+    : true
+}));
+
+// Rate limiting - Prevent spam attacks
+const chatLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: { error: 'Too many requests, please try again later' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Body parser with size limit
+app.use(express.json({ limit: '10kb' }));
+
+// Apply rate limiter to /api routes
+app.use('/api', chatLimiter);
+
+// ============ KNOWLEDGE BASE ============
 
 // Load knowledge base
 const knowledgeBasePath = path.join(__dirname, 'knowledge-base', 'riza-abdhi-linkedin.md');
@@ -264,16 +287,21 @@ app.post('/api/chat', async (req, res) => {
   try {
     const { message, context } = req.body;
 
-    if (!message || message.trim().length === 0) {
+    // Validate message - required and max length
+    const MAX_MESSAGE_LENGTH = 1000;
+    if (!message || typeof message !== 'string' || message.trim().length === 0) {
       return res.status(400).json({ error: 'Message is required' });
     }
+    if (message.length > MAX_MESSAGE_LENGTH) {
+      return res.status(400).json({ error: 'Message too long' });
+    }
 
-    console.log(`💬 Chat: "${message}"`);
+    console.log(`💬 Chat: "${message.substring(0, 50)}..."`);
 
     // Generate response with enhanced pattern matching
     const response = generateResponse(message);
 
-    // Simulate minimal delay for UX
+    // Minimal delay for UX (already prevents quick spam)
     await new Promise(resolve => setTimeout(resolve, 300));
 
     res.json({
