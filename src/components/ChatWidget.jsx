@@ -1,22 +1,28 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Bot, User, Loader2 } from 'lucide-react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { MessageCircle, X, Send, Bot, User, Loader2, RotateCcw } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 // Initial greeting message
 const INITIAL_GREETING = "Hai! 👋 Saya Anak Intern, asisten digital Abdhi. Tanya aja tentang:\n\n• Pengalaman kerja & career\n• Skills & expertise\n• Education & background\n• Awards & achievements\n• Cara menghubungi\n\nApa yang ingin kamu tahu?";
 
+// Generate or get session ID
+function getSessionId() {
+  const STORAGE_KEY = 'chatbot_session_id';
+  let sessionId = localStorage.getItem(STORAGE_KEY);
+  if (!sessionId) {
+    sessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    localStorage.setItem(STORAGE_KEY, sessionId);
+  }
+  return sessionId;
+}
+
 // Fallback responses when API is unavailable
 const FALLBACK_RESPONSES = {
-  experience: "**Pengalaman Abdhi:**\n\n📱 Mobile Engineer - iOS @ NBS (Jul 2021 - Sekarang)\n📱 Mobile Developer @ HEPTACO (Dec 2020 - Jun 2021)\n📱 iOS/Android Developer @ KECILIN\n📱 Android Developer @ Widya Edu, Credeva, Teman Kajian\n\n4+ tahun pengalaman di mobile development!",
-  
+  experience: "**Pengalaman Abdhi:**\n\n📱 Mobile Engineer - iOS @ NBS (Jul 2021 - Sekarang)\n📱 Mobile Developer @ HEPTACO (Dec 2020 - Jun 2021)\n📱 iOS/Android Developer @ KECILIN\n📱 Android Developer @ Widya Edu, Credeva, Teman Kajian\n\n4+ tahun pengalaman di mobile development!",  
   skills: "**Tech Skills:**\n\n🍎 iOS: Swift, SwiftUI, Clean Architecture\n🤖 Android: Kotlin, Java\n🎯 Focus: Mobile architecture, UX, Clean code\n\nCertified dari Apple Developer Academy!",
-  
   education: "**Education:**\n\n🍎 Apple Developer Academy @ Infinite Learning (2022)\n🎓 AMIKOM Yogyakarta - Informatika, GPA 3.61\n🎓 Bangkit Academy led by Google (2021)\n📚 Dicoding Academy - Android & iOS Path",
-  
   awards: "**Awards:**\n\n🏆 ASEAN Outstanding Invention Award (Thailand 2020)\n🥇 Gold Medal - Asian Youth Innovation (Malaysia 2020)\n🥇 Gold Medal - Thailand Inventors Day 2020\n🏅 1st Winner IT Competition IFest 2020",
-  
   contact: "**Contact Abdhi:**\n\n💼 LinkedIn: linkedin.com/in/rizaabdhi\n💻 GitHub: github.com/abdhilabs\n🌐 Website: abdhilabs.com",
-  
   default: "Hmm, koneksi lagi bermasalah 😅\n\nCoba tanya lagi ya! Atau langsung hubungi via LinkedIn:\nlinkedin.com/in/rizaabdhi"
 };
 
@@ -32,6 +38,7 @@ const ChatWidget = () => {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [sessionId, setSessionId] = useState(() => getSessionId());
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -64,6 +71,26 @@ const ChatWidget = () => {
     return FALLBACK_RESPONSES.default;
   };
 
+  const clearConversation = async () => {
+    try {
+      await fetch('/api/chat/clear', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId })
+      });
+      setMessages([
+        {
+          id: 1,
+          role: 'bot',
+          content: INITIAL_GREETING,
+          timestamp: new Date()
+        }
+      ]);
+    } catch (error) {
+      console.error('Clear conversation error:', error);
+    }
+  };
+
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
 
@@ -84,6 +111,7 @@ const ChatWidget = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: userMessage.content,
+          sessionId,
           context: 'personal-brand'
         })
       });
@@ -93,6 +121,12 @@ const ChatWidget = () => {
       }
 
       const data = await response.json();
+
+      // Update sessionId if returned from server
+      if (data.sessionId) {
+        setSessionId(data.sessionId);
+        localStorage.setItem('chatbot_session_id', data.sessionId);
+      }
 
       const botMessage = {
         id: Date.now() + 1,
@@ -105,7 +139,6 @@ const ChatWidget = () => {
     } catch (error) {
       console.error('Chat error:', error);
       
-      // Use fallback response based on message content
       const fallbackResponse = getFallbackResponse(userMessage.content);
       
       const errorMessage = {
@@ -172,16 +205,25 @@ const ChatWidget = () => {
             </div>
             <div>
               <h3 className="font-semibold text-white dark:text-black text-sm">Anak Intern</h3>
-              <p className="text-xs text-gray-300 dark:text-gray-400">Personal Assistant</p>
+              <p className="text-xs text-gray-300 dark:text-gray-400">AI Assistant</p>
             </div>
           </div>
-          <button
-            onClick={() => setIsOpen(false)}
-            className="p-2 hover:bg-gray-800 dark:hover:bg-gray-200 rounded-full transition-colors"
-            aria-label="Close chat"
-          >
-            <X className="w-5 h-5 text-white dark:text-black" />
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={clearConversation}
+              className="p-2 hover:bg-gray-800 dark:hover:bg-gray-200 rounded-full transition-colors"
+              aria-label="Clear conversation"
+            >
+              <RotateCcw className="w-4 h-4 text-white dark:text-black" />
+            </button>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-2 hover:bg-gray-800 dark:hover:bg-gray-200 rounded-full transition-colors"
+              aria-label="Close chat"
+            >
+              <X className="w-5 h-5 text-white dark:text-black" />
+            </button>
+          </div>
         </div>
 
         {/* Messages */}
