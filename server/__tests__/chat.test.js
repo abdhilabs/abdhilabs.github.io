@@ -79,9 +79,7 @@ describe('Chat API', () => {
           .send({ message: query });
         
         expect(res.status).toBe(200);
-        expect(res.body.response).toContain('iOS') || 
-               expect(res.body.response).toContain('Abdhi') ||
-               expect(res.body.response).toContain('developer');
+        expect(res.body.response.toLowerCase()).toMatch(/ios|abdhi|developer/i);
       }
     });
 
@@ -108,9 +106,7 @@ describe('Chat API', () => {
           .send({ message: query });
         
         expect(res.status).toBe(200);
-        expect(res.body.response).toContain('iOS') || 
-               expect(res.body.response).toContain('Swift') ||
-               expect(res.body.response).toContain('skill');
+        expect(res.body.response.toLowerCase()).toMatch(/ios|swift|skill/i);
       }
     });
 
@@ -136,9 +132,7 @@ describe('Chat API', () => {
           .send({ message: query });
         
         expect(res.status).toBe(200);
-        expect(res.body.response).toContain('award') ||
-               expect(res.body.response).toContain('Gold') ||
-               expect(res.body.response).toContain('medal');
+        expect(res.body.response.toLowerCase()).toMatch(/award|gold|medal/i);
       }
     });
 
