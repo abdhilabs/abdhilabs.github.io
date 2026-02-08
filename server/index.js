@@ -105,7 +105,7 @@ async function callJatevoAPI(messages, sessionId) {
         model: MODEL_ID,
         messages: messages,
         stream: false,
-        max_tokens: 1000,
+        max_tokens: 4000,
         temperature: 0.7
       })
     });
