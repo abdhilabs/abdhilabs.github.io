@@ -92,6 +92,8 @@ async function callJatevoAPI(messages, sessionId) {
     return null;
   }
 
+  console.log(`🚀 Calling Jatevo API (${messages.length} messages)...`);
+
   try {
     const response = await fetch(JATEVO_API_URL, {
       method: 'POST',
@@ -108,16 +110,19 @@ async function callJatevoAPI(messages, sessionId) {
       })
     });
 
+    console.log(`📡 Jatevo API response status: ${response.status}`);
+
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('❌ Jatevo API error:', response.status, errorText);
+      console.error(`❌ Jatevo API HTTP error: ${response.status}`, errorText.substring(0, 200));
       return null;
     }
 
     const data = await response.json();
+    console.log(`✅ Jatevo API response received`);
     return data.choices[0]?.message?.content || null;
   } catch (error) {
-    console.error('❌ Jatevo API error:', error.message);
+    console.error(`❌ Jatevo API exception:`, error.message);
     return null;
   }
 }
