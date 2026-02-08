@@ -120,6 +120,7 @@ async function callJatevoAPI(messages, sessionId) {
 
     const data = await response.json();
     console.log(`✅ Jatevo API response received`);
+    console.log(`🔍 Response structure:`, JSON.stringify(data, null, 2).substring(0, 500));
     return data.choices[0]?.message?.content || null;
   } catch (error) {
     console.error(`❌ Jatevo API exception:`, error.message);
