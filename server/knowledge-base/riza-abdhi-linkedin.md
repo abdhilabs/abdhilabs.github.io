@@ -126,6 +126,7 @@ Mar 2018 - Feb 2019 | Staff Bendahara (Treasurer)
 
 ## Contact & Availability
 - Based in Jakarta/Bandung area
+- Email: rizaabdhi@gmail.com
 - Open to career opportunities, especially iOS roles
 - Available for freelance projects
 
