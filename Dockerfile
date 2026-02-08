@@ -13,6 +13,7 @@ FROM node:20-alpine AS server-build
 WORKDIR /app/server
 COPY server/package.json server/package-lock.json* ./
 RUN npm install --production
+COPY server/ ./
 
 # --- runtime stage ---
 FROM nginx:alpine
