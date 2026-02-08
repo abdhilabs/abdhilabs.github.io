@@ -11,7 +11,7 @@ RUN yarn build
 # --- server build stage ---
 FROM node:20-alpine AS server-build
 WORKDIR /app/server
-COPY server/package.json server/package-lock.json* ./
+COPY server/ ./
 RUN npm install --production
 
 # --- runtime stage ---
