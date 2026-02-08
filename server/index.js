@@ -322,6 +322,7 @@ app.post('/api/chat', async (req, res) => {
     res.json({
       response,
       sessionId,
+      context,
       timestamp: new Date().toISOString()
     });
 
