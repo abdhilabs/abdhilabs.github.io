@@ -1,0 +1,11 @@
+services:
+  site:
+    image: ghcr.io/abdhilabs/abdhilabs-site:latest
+    ports:
+      - "8080:80"
+    environment:
+      - JATEVO_API_KEY=${JATEVO_API_KEY}
+      - JATEVO_API_URL=https://inference.jatevo.id/v1/chat/completions
+      - PORT=3002
+      - NODE_ENV=production
+    restart: unless-stopped
