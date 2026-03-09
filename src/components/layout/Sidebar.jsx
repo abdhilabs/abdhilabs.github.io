@@ -99,7 +99,7 @@ const Sidebar = ({ isMobileOpen, onMobileToggle }) => {
           </nav>
 
           {/* Social Links & Theme Toggle */}
-          <div className="pt-6 border-t border-gray-200 dark:border-gray-800">
+          <div className="pt-6 border-t border-gray-200 dark:border-gray-800 space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-1">
                 <a
@@ -139,6 +139,16 @@ const Sidebar = ({ isMobileOpen, onMobileToggle }) => {
               </div>
               <ThemeToggle />
             </div>
+            <p className="text-[11px] text-gray-400 dark:text-gray-600">
+              <a
+                href="https://ia.net/writer"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-gray-600 dark:hover:text-gray-500 transition-colors"
+              >
+                Fonts by iA Writer
+              </a>
+            </p>
           </div>
         </div>
       </aside>

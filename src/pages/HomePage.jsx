@@ -17,7 +17,7 @@ const HomePage = () => {
         <div className="flex items-start gap-5 mb-6">
           <img
             src={profileData.avatar}
-            alt={profileData.name}
+            alt="Abdhi, iOS Engineer"
             className="w-20 h-20 rounded-full object-cover ring-2 ring-gray-100 dark:ring-gray-800"
           />
           <div>

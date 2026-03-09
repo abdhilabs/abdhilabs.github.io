@@ -7,6 +7,10 @@ module.exports = {
 	],
 	theme: {
 		extend: {
+			fontFamily: {
+				sans: ['iA Writer Quattro', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+				mono: ['Geist Mono', 'ui-monospace', 'Menlo', 'Monaco', 'monospace'],
+			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
