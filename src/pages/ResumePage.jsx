@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Briefcase, GraduationCap, Mail } from 'lucide-react';
 import { resumeData, profileData } from '../data/mock';
 import { Badge } from '../components/ui/badge';
@@ -69,6 +70,10 @@ const EducationCard = ({ education }) => {
 const ResumePage = () => {
   return (
     <div className="max-w-2xl mx-auto px-6 py-12 lg:py-16">
+      <Helmet>
+        <title>Resume</title>
+        <meta name="description" content="Resume of Abdhi — iOS Engineer. Experience, education, and skills in Swift, SwiftUI, and mobile development." />
+      </Helmet>
       <header className="mb-10">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Resume</h1>
         <p className="text-gray-600 dark:text-gray-400 mb-4">

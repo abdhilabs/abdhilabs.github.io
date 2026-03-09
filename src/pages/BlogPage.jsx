@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { ArrowLeft, Clock, Loader2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -66,8 +67,19 @@ const BlogPost = ({ post }) => {
     );
   }
 
+  const metaDescription = post.excerpt || `${post.title} — by Abdhi, iOS Engineer.`;
+
   return (
-    <article className="max-w-2xl">
+    <>
+      <Helmet>
+        <title>{post.title}</title>
+        <meta name="description" content={metaDescription} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={metaDescription} />
+        <meta name="twitter:title" content={post.title} />
+        <meta name="twitter:description" content={metaDescription} />
+      </Helmet>
+      <article className="max-w-2xl">
       <button
         onClick={() => navigate('/blog')}
         className="lg:hidden flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 mb-6 transition-colors"
@@ -108,6 +120,7 @@ const BlogPost = ({ post }) => {
         </ReactMarkdown>
       </div>
     </article>
+    </>
   );
 };
 
@@ -132,8 +145,16 @@ const BlogPage = () => {
     );
   }
 
+  const isPostView = Boolean(slug && selectedPost);
+
   return (
     <div className="min-h-screen">
+      {!slug && (
+        <Helmet>
+          <title>Writing</title>
+          <meta name="description" content="Writing by Abdhi — iOS Engineer. Articles on iOS development, Swift, and software engineering." />
+        </Helmet>
+      )}
       <div className="flex">
         {/* Post List */}
         <div
@@ -143,7 +164,11 @@ const BlogPage = () => {
           )}
         >
           <div className="p-6">
-            <h1 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Writing</h1>
+            {isPostView ? (
+              <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Writing</h2>
+            ) : (
+              <h1 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Writing</h1>
+            )}
             <BlogList posts={posts} selectedSlug={slug} />
           </div>
         </div>

@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import Sidebar from './Sidebar';
 import { useSidebar } from '../../context/ThemeContext';
 import { cn } from '../../lib/utils';
+
+const defaultTitle = 'Abdhi | iOS Engineer';
+const defaultDescription = 'Abdhi — iOS Engineer. Portfolio, writing, and projects. Building seamless, high-performance iOS apps with Swift and SwiftUI.';
 
 const Layout = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -11,6 +15,9 @@ const Layout = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
+      <Helmet defaultTitle={defaultTitle} titleTemplate="%s | Abdhi">
+        <meta name="description" content={defaultDescription} />
+      </Helmet>
       <Sidebar isMobileOpen={mobileOpen} onMobileToggle={toggleMobile} />
       
       {/* Main Content */}
