@@ -28,18 +28,26 @@ export default function UmamiAnalytics() {
   const lastTracked = useRef(null);
   const initialTrackDone = useRef(false);
 
-  // Inject script when idle (production only), track first pageview on load
+  // Inject preconnect + script when idle (production only), track first pageview on load
   useEffect(() => {
     if (!IS_PRODUCTION || !UMAMI_URL || !UMAMI_WEBSITE_ID || scriptInjected.current) return;
+
+    const baseUrl = UMAMI_URL.replace(/\/$/, '');
 
     const injectAndTrack = () => {
       if (scriptInjected.current) return;
       scriptInjected.current = true;
 
+      const preconnect = document.createElement('link');
+      preconnect.rel = 'preconnect';
+      preconnect.href = baseUrl;
+      preconnect.crossOrigin = 'anonymous';
+      document.head.appendChild(preconnect);
+
       const script = document.createElement('script');
       script.async = true;
       script.defer = true;
-      script.src = `${UMAMI_URL.replace(/\/$/, '')}/umami.js`;
+      script.src = `${baseUrl}/umami.js`;
       script.setAttribute('data-website-id', UMAMI_WEBSITE_ID);
       script.setAttribute('data-auto-track', 'false');
       script.setAttribute('data-do-not-track', 'true');
@@ -50,6 +58,9 @@ export default function UmamiAnalytics() {
           lastTracked.current = url;
           trackPageView(url, document.title);
         }
+      };
+      script.onerror = () => {
+        scriptInjected.current = false;
       };
       document.head.appendChild(script);
     };
