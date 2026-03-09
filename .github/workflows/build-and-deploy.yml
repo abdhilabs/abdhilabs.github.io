@@ -28,6 +28,9 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ghcr.io/abdhilabs/abdhilabs-site:latest
+          build-args: |
+            REACT_APP_UMAMI_URL=${{ vars.REACT_APP_UMAMI_URL }}
+            REACT_APP_UMAMI_WEBSITE_ID=${{ vars.REACT_APP_UMAMI_WEBSITE_ID }}
 
   deploy:
     needs: build-and-push
