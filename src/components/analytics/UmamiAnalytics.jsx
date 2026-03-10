@@ -47,7 +47,7 @@ export default function UmamiAnalytics() {
       const script = document.createElement('script');
       script.async = true;
       script.defer = true;
-      script.src = `${baseUrl}/umami.js`;
+      script.src = `${baseUrl}/script.js`;
       script.setAttribute('data-website-id', UMAMI_WEBSITE_ID);
       script.setAttribute('data-auto-track', 'false');
       script.setAttribute('data-do-not-track', 'true');
@@ -59,17 +59,19 @@ export default function UmamiAnalytics() {
           trackPageView(url, document.title);
         }
       };
-      script.onerror = () => {
-        scriptInjected.current = false;
-      };
+      // No retry: effect has empty deps so it only runs once. Preconnect link remains in DOM (harmless).
+      script.onerror = () => {};
       document.head.appendChild(script);
     };
 
-    if (typeof requestIdleCallback !== 'undefined') {
-      requestIdleCallback(injectAndTrack, { timeout: 2500 });
-    } else {
-      setTimeout(injectAndTrack, 0);
-    }
+    const useIdle = typeof requestIdleCallback !== 'undefined';
+    const scheduledId = useIdle
+      ? requestIdleCallback(injectAndTrack, { timeout: 2500 })
+      : setTimeout(injectAndTrack, 0);
+    return () => {
+      if (useIdle) cancelIdleCallback(scheduledId);
+      else clearTimeout(scheduledId);
+    };
   }, []);
 
   // Track only on route change (not on first load; script onload handles that)
@@ -81,7 +83,9 @@ export default function UmamiAnalytics() {
     lastTracked.current = url;
 
     if (typeof window.umami !== 'undefined') {
-      trackPageView(url, document.title);
+      requestAnimationFrame(() => {
+        trackPageView(url, document.title);
+      });
     }
   }, [location.pathname, location.search]);
 
