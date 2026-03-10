@@ -155,6 +155,14 @@ const BlogPage = () => {
           <meta name="description" content="Writing by Abdhi — iOS Engineer. Articles on iOS development, Swift, and software engineering." />
         </Helmet>
       )}
+      {slug && !selectedPost && (
+        <Helmet>
+          <title>Post not found</title>
+          <meta name="description" content="The blog post you’re looking for doesn’t exist or has been moved." />
+          <meta name="robots" content="noindex" />
+          <link rel="canonical" href="https://abdhilabs.com/blog" />
+        </Helmet>
+      )}
       <div className="flex">
         {/* Post List */}
         <div

@@ -47,7 +47,7 @@ export default function UmamiAnalytics() {
       const script = document.createElement('script');
       script.async = true;
       script.defer = true;
-      script.src = `${baseUrl}/umami.js`;
+      script.src = `${baseUrl}/script.js`;
       script.setAttribute('data-website-id', UMAMI_WEBSITE_ID);
       script.setAttribute('data-auto-track', 'false');
       script.setAttribute('data-do-not-track', 'true');
@@ -59,17 +59,19 @@ export default function UmamiAnalytics() {
           trackPageView(url, document.title);
         }
       };
-      script.onerror = () => {
-        scriptInjected.current = false;
-      };
+      // No retry: effect has empty deps so it only runs once. Preconnect link remains in DOM (harmless).
+      script.onerror = () => {};
       document.head.appendChild(script);
     };
 
-    if (typeof requestIdleCallback !== 'undefined') {
-      requestIdleCallback(injectAndTrack, { timeout: 2500 });
-    } else {
-      setTimeout(injectAndTrack, 0);
-    }
+    const useIdle = typeof requestIdleCallback !== 'undefined';
+    const scheduledId = useIdle
+      ? requestIdleCallback(injectAndTrack, { timeout: 2500 })
+      : setTimeout(injectAndTrack, 0);
+    return () => {
+      if (useIdle) cancelIdleCallback(scheduledId);
+      else clearTimeout(scheduledId);
+    };
   }, []);
 
   // Track only on route change (not on first load; script onload handles that)
@@ -78,11 +80,40 @@ export default function UmamiAnalytics() {
 
     const url = normalizePath(location.pathname, location.search);
     if (lastTracked.current === url) return;
-    lastTracked.current = url;
 
-    if (typeof window.umami !== 'undefined') {
+    if (typeof window.umami === 'undefined') return;
+
+    // Read title only after Helmet updates it, and tie it to this effect's url so rapid nav doesn't send wrong title.
+    // MutationObserver fires when <title> changes; fallback timeout handles same-title or no change.
+    // Cleanup cancels observer and timeout so only the latest navigation's doTrack can run — no duplicate tracks on rapid /a → /b → /a. Tradeoff: an intermediate view can be dropped on very fast nav (we prefer correct url/title over guaranteeing every view).
+    const titleEl = document.querySelector('title');
+    let observer = null;
+    let fallbackId = null;
+
+    const doTrack = () => {
+      if (typeof window.umami === 'undefined') return;
       trackPageView(url, document.title);
+      lastTracked.current = url;
+      if (observer) observer.disconnect();
+      if (fallbackId) clearTimeout(fallbackId);
+    };
+
+    fallbackId = setTimeout(doTrack, 100);
+
+    if (titleEl) {
+      observer = new MutationObserver(doTrack);
+      observer.observe(titleEl, { characterData: true, childList: true, subtree: true });
+    } else {
+      clearTimeout(fallbackId);
+      fallbackId = null;
+      // No cleanup for this RAF: canceling would drop the page view on fast nav (regression vs sync track).
+      requestAnimationFrame(doTrack);
     }
+
+    return () => {
+      if (observer) observer.disconnect();
+      if (fallbackId) clearTimeout(fallbackId);
+    };
   }, [location.pathname, location.search]);
 
   return null;

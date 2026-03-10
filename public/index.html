@@ -10,19 +10,17 @@
     <meta name="author" content="Abdhi" />
     <meta name="robots" content="index, follow" />
 
-    <!-- Open Graph -->
+    <!-- Canonical: no static link here; Helmet sets per-page canonical when JS runs. Non-JS crawlers see no canonical (intentional: a static homepage canonical would tell crawlers every URL is canonical to /, which can suppress /blog, /projects, etc.). -->
+    <!-- Open Graph & Twitter: fallback for non-JS crawlers (homepage only). Helmet sets per-page og:url etc. when JS runs and deduplicates by property; non-JS crawlers see only these static values for all URLs. -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://abdhilabs.com" />
     <meta property="og:title" content="Abdhi | iOS Engineer" />
     <meta property="og:description" content="Abdhi — iOS Engineer. Portfolio, writing, and projects. Building seamless, high-performance iOS apps with Swift and SwiftUI." />
     <meta property="og:locale" content="en_US" />
-
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Abdhi | iOS Engineer" />
     <meta name="twitter:description" content="Abdhi — iOS Engineer. Portfolio, writing, and projects. Building seamless, high-performance iOS apps with Swift and SwiftUI." />
 
-    <link rel="canonical" href="https://abdhilabs.com" />
     <link rel="icon" type="image/x-icon" href="%PUBLIC_URL%/favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon-16x16.png" />
