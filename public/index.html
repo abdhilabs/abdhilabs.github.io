@@ -10,7 +10,7 @@
     <meta name="author" content="Abdhi" />
     <meta name="robots" content="index, follow" />
 
-    <!-- Open Graph & Twitter: fallback for non-JS crawlers (homepage only). Page-specific og/twitter tags are set by Helmet when JS runs; crawlers that don’t execute JS will see these values for all URLs. -->
+    <!-- Open Graph & Twitter: fallback for non-JS crawlers (homepage only). Helmet sets per-page og:url etc. when JS runs and deduplicates by property; non-JS crawlers see only these static values for all URLs. -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://abdhilabs.com" />
     <meta property="og:title" content="Abdhi | iOS Engineer" />

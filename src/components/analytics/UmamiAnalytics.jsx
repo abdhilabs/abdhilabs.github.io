@@ -82,11 +82,13 @@ export default function UmamiAnalytics() {
     if (lastTracked.current === url) return;
     lastTracked.current = url;
 
-    if (typeof window.umami !== 'undefined') {
-      requestAnimationFrame(() => {
-        trackPageView(url, document.title);
-      });
-    }
+    if (typeof window.umami === 'undefined') return;
+
+    // Defer so document.title is read after Helmet has updated it (RAF runs after next paint).
+    const rafId = requestAnimationFrame(() => {
+      trackPageView(url, document.title);
+    });
+    return () => cancelAnimationFrame(rafId);
   }, [location.pathname, location.search]);
 
   return null;

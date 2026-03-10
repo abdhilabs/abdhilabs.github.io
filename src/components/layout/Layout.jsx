@@ -13,7 +13,8 @@ const Layout = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { isExpanded } = useSidebar();
   const location = useLocation();
-  const canonicalUrl = `${SITE_BASE}${location.pathname}${location.search || ''}`;
+  // Exclude query params from canonical/og:url so UTMs, pagination, etc. don’t fragment SEO signals.
+  const canonicalUrl = `${SITE_BASE}${location.pathname}`;
 
   const toggleMobile = () => setMobileOpen(!mobileOpen);
 
