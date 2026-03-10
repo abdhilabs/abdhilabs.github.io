@@ -13,8 +13,10 @@ const Layout = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { isExpanded } = useSidebar();
   const location = useLocation();
-  // Exclude query params from canonical/og:url so UTMs, pagination, etc. don’t fragment SEO signals.
-  const canonicalUrl = `${SITE_BASE}${location.pathname}`;
+  // Exclude query params; strip trailing slash (except root) for consistency with analytics and to avoid duplicate-content signals.
+  const pathname = location.pathname || '/';
+  const pathnameNoTrailing = pathname.endsWith('/') && pathname.length > 1 ? pathname.slice(0, -1) : pathname;
+  const canonicalUrl = `${SITE_BASE}${pathnameNoTrailing}`;
 
   const toggleMobile = () => setMobileOpen(!mobileOpen);
 

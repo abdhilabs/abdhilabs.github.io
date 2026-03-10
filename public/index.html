@@ -10,6 +10,7 @@
     <meta name="author" content="Abdhi" />
     <meta name="robots" content="index, follow" />
 
+    <!-- Canonical: no static link here; Helmet sets per-page canonical when JS runs. Non-JS crawlers see no canonical (intentional: a static homepage canonical would tell crawlers every URL is canonical to /, which can suppress /blog, /projects, etc.). -->
     <!-- Open Graph & Twitter: fallback for non-JS crawlers (homepage only). Helmet sets per-page og:url etc. when JS runs and deduplicates by property; non-JS crawlers see only these static values for all URLs. -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://abdhilabs.com" />

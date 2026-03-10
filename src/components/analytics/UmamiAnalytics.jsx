@@ -80,15 +80,18 @@ export default function UmamiAnalytics() {
 
     const url = normalizePath(location.pathname, location.search);
     if (lastTracked.current === url) return;
-    lastTracked.current = url;
 
     if (typeof window.umami === 'undefined') return;
 
     // Defer so document.title is read after Helmet has updated it (RAF runs after next paint).
-    const rafId = requestAnimationFrame(() => {
-      trackPageView(url, document.title);
+    // No cleanup: canceling RAF on fast navigation would drop page views; closure url/title are correct, track is idempotent.
+    // Set lastTracked only after we actually track, so if umami isn't ready yet we don't mark as tracked and a later navigation can retry.
+    requestAnimationFrame(() => {
+      if (typeof window.umami !== 'undefined') {
+        trackPageView(url, document.title);
+        lastTracked.current = url;
+      }
     });
-    return () => cancelAnimationFrame(rafId);
   }, [location.pathname, location.search]);
 
   return null;
