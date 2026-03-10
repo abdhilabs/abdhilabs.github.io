@@ -70,7 +70,7 @@ const EducationCard = ({ education }) => {
 const ResumePage = () => {
   return (
     <div className="max-w-2xl mx-auto px-6 py-12 lg:py-16">
-      <Helmet>
+      <Helmet titleTemplate="%s | Abdhi">
         <title>Resume</title>
         <meta name="description" content="Resume of Abdhi — iOS Engineer. Experience, education, and skills in Swift, SwiftUI, and mobile development." />
       </Helmet>

@@ -71,7 +71,7 @@ const BlogPost = ({ post }) => {
 
   return (
     <>
-      <Helmet>
+      <Helmet titleTemplate="%s | Abdhi">
         <title>{post.title}</title>
         <meta name="description" content={metaDescription} />
         <meta property="og:title" content={post.title} />
@@ -150,13 +150,13 @@ const BlogPage = () => {
   return (
     <div className="min-h-screen">
       {!slug && (
-        <Helmet>
+        <Helmet titleTemplate="%s | Abdhi">
           <title>Writing</title>
           <meta name="description" content="Writing by Abdhi — iOS Engineer. Articles on iOS development, Swift, and software engineering." />
         </Helmet>
       )}
       {slug && !selectedPost && (
-        <Helmet>
+        <Helmet titleTemplate="%s | Abdhi">
           <title>Post not found</title>
           <meta name="description" content="The blog post you’re looking for doesn’t exist or has been moved." />
           <meta name="robots" content="noindex" />

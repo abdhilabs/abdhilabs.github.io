@@ -70,7 +70,7 @@ const ProjectsPage = () => {
 
   return (
     <div className="max-w-2xl mx-auto px-6 py-12 lg:py-16">
-      <Helmet>
+      <Helmet titleTemplate="%s | Abdhi">
         <title>Projects</title>
         <meta name="description" content="Projects by Abdhi — iOS Engineer. Apps and open source projects built with Swift, SwiftUI, and more." />
       </Helmet>
