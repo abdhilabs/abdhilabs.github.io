@@ -159,6 +159,7 @@ const BlogPage = () => {
         <Helmet>
           <title>Post not found</title>
           <meta name="description" content="The blog post you’re looking for doesn’t exist or has been moved." />
+          <meta name="robots" content="noindex" />
         </Helmet>
       )}
       <div className="flex">

@@ -83,15 +83,37 @@ export default function UmamiAnalytics() {
 
     if (typeof window.umami === 'undefined') return;
 
-    // Defer so document.title is read after Helmet has updated it (RAF runs after next paint).
-    // No cleanup: canceling RAF on fast navigation would drop page views; closure url/title are correct, track is idempotent.
-    // Set lastTracked only after we actually track, so if umami isn't ready yet we don't mark as tracked and a later navigation can retry.
-    requestAnimationFrame(() => {
-      if (typeof window.umami !== 'undefined') {
-        trackPageView(url, document.title);
-        lastTracked.current = url;
-      }
-    });
+    // Read title only after Helmet updates it, and tie it to this effect's url so rapid nav doesn't send wrong title.
+    // MutationObserver fires when <title> changes; fallback timeout handles same-title or no change.
+    // Cleanup cancels observer and timeout so only the latest navigation's doTrack can run — no duplicate tracks on rapid /a → /b → /a. Tradeoff: an intermediate view can be dropped on very fast nav (we prefer correct url/title over guaranteeing every view).
+    const titleEl = document.querySelector('title');
+    let observer = null;
+    let fallbackId = null;
+
+    const doTrack = () => {
+      if (typeof window.umami === 'undefined') return;
+      trackPageView(url, document.title);
+      lastTracked.current = url;
+      if (observer) observer.disconnect();
+      if (fallbackId) clearTimeout(fallbackId);
+    };
+
+    fallbackId = setTimeout(doTrack, 100);
+
+    if (titleEl) {
+      observer = new MutationObserver(doTrack);
+      observer.observe(titleEl, { characterData: true, childList: true, subtree: true });
+    } else {
+      clearTimeout(fallbackId);
+      fallbackId = null;
+      // No cleanup for this RAF: canceling would drop the page view on fast nav (regression vs sync track).
+      requestAnimationFrame(doTrack);
+    }
+
+    return () => {
+      if (observer) observer.disconnect();
+      if (fallbackId) clearTimeout(fallbackId);
+    };
   }, [location.pathname, location.search]);
 
   return null;
