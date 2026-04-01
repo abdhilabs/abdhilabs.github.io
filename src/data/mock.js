@@ -101,12 +101,13 @@ export const projectsData = [
   {
     id: "3",
     name: "Blockr",
-    tagline: "Block distractions, stay focused.",
+    tagline: "Pomodoro focus timer with todo list — iOS & macOS.",
     description:
-      "A focus app that helps you block distracting websites and apps to maintain deep work sessions. Features: custom blocklists, scheduled focus sessions, and productivity analytics.",
-    icon: "🚫",
+      "A native focus timer built with TCA (The Composable Architecture). Features Pomodoro cycles (25/5/15 min), integrated todo list, productivity stats, and cross-platform notifications. Available on iOS/iPadOS and macOS.",
+    icon: "⏱️",
     link: "https://blockr.abdhilabs.com/",
-    tech: ["Web App", "Focus", "Productivity"],
+    github: "https://github.com/abdhilabs/Blockr",
+    tech: ["Swift", "SwiftUI", "The Composable Architecture (TCA)", "SQLite", "XcodeGen", "macOS", "iOS"],
     featured: true
   }
 ];
