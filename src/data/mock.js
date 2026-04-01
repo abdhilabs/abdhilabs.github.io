@@ -97,6 +97,17 @@ export const projectsData = [
     github: "https://github.com/abdhilabs/Socgent",
     tech: ["SwiftUI", "The Composable Architecture (TCA)", "SwiftData", "Moya", "SwiftLint", "XcodeGen"],
     featured: true
+  },
+  {
+    id: "3",
+    name: "Blockr",
+    tagline: "Block distractions, stay focused.",
+    description:
+      "A focus app that helps you block distracting websites and apps to maintain deep work sessions. Features: custom blocklists, scheduled focus sessions, and productivity analytics.",
+    icon: "🚫",
+    link: "https://blockr.abdhilabs.com/",
+    tech: ["Web App", "Focus", "Productivity"],
+    featured: true
   }
 ];
 
