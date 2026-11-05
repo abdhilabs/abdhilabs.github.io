@@ -7,8 +7,8 @@ import { formatDate } from '../utils/blogUtils';
 
 const HomePage = () => {
   const { posts, loading } = useBlogPosts();
-  const recentPosts = posts.slice(0, 3);
-  const featuredProjects = projectsData.filter(p => p.featured).slice(0, 3);
+  const recentPosts = posts.slice(0, 4);
+  const featuredProjects = projectsData.filter(p => p.featured);
 
   return (
     <div className="max-w-2xl mx-auto px-6 py-12 lg:py-16">

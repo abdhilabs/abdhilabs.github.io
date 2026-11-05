@@ -75,18 +75,6 @@ export const resumeData = {
 
 export const projectsData = [
   {
-    id: "1",
-    name: "GameRAW",
-    tagline: "Browse, search, and favorite games on iOS.",
-    description:
-      "An iOS app that displays a list of games, lets you search games you want, and saves selected games as favorites in a local database. Features: List Games, Search Games, Favorite Games, and Game Detail.",
-    icon: "🎮",
-    link: "https://github.com/abdhilabs/GameRAW",
-    github: "https://github.com/abdhilabs/GameRAW",
-    tech: ["Swift", "SwiftUI", "Core Data", "SPM", "Modularization", "Dependency Injection"],
-    featured: true
-  },
-  {
     id: "2",
     name: "Socgent",
     tagline: "Capture, tag, and reuse social links fast.",
@@ -108,6 +96,18 @@ export const projectsData = [
     link: "https://blockr.abdhilabs.com/",
     github: "https://github.com/abdhilabs/Blockr",
     tech: ["Swift", "SwiftUI", "The Composable Architecture (TCA)", "SQLite", "XcodeGen", "macOS", "iOS"],
+    featured: true
+  },
+  {
+    id: "4",
+    name: "HeliqSDK",
+    tagline: "Swift SDK for Hyperliquid — iOS & macOS.",
+    description:
+      "An open-source Swift SDK for Hyperliquid. Covers market data, trading, account balances, and WebSocket subscriptions. Supports iOS 16+ and macOS 13+ (Swift 6.1+).",
+    icon: "📈",
+    link: "https://abdhilabs.github.io/heliq-sdk/",
+    github: "https://github.com/abdhilabs/heliq-sdk",
+    tech: ["Swift", "iOS", "macOS", "WebSocket"],
     featured: true
   }
 ];
