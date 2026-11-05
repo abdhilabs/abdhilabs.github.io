@@ -22,13 +22,21 @@ jobs:
   build:
     name: Build image
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions:
       contents: read
       actions: write # GitHub Actions layer cache
       packages: write # push to GHCR; the push step is limited to main
     steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@46b06cea07f9e64621fdf066ba77ac6915163d43 # v2.22.3
+        with:
+          egress-policy: audit
+
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
@@ -85,9 +93,26 @@ jobs:
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: production
     permissions:
       contents: read
     steps:
+      - name: Harden the runner
+        uses: step-security/harden-runner@46b06cea07f9e64621fdf066ba77ac6915163d43 # v2.22.3
+        with:
+          egress-policy: audit
+
+      - name: Require pinned host key
+        env:
+          DEPLOY_HOST_FINGERPRINT: ${{ secrets.DEPLOY_HOST_FINGERPRINT }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${DEPLOY_HOST_FINGERPRINT}" ]]; then
+            echo "Set the production secret DEPLOY_HOST_FINGERPRINT (SHA256:...) before deploying."
+            exit 1
+          fi
+
       - name: Connect to Tailscale
         uses: tailscale/github-action@064b10558093f38325e838ddea35486bdc6b1d5c # v4.4.0
         with:
@@ -101,39 +126,78 @@ jobs:
         uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
+          username: deploy
           port: ${{ secrets.DEPLOY_PORT }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
-          script: |
-            set -e
-            cd /opt/abdhilabs/site
-
-            echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ secrets.GHCR_USERNAME }}" --password-stdin
-
-            docker compose pull
-            docker compose up -d --remove-orphans
-            docker image prune -f
+          fingerprint: ${{ secrets.DEPLOY_HOST_FINGERPRINT }}
+          # Forced command on the server. This string becomes SSH_ORIGINAL_COMMAND.
+          script: ${{ github.sha }}
 
       - name: Smoke test production
         run: |
           set -euo pipefail
-          # GET without -L, so a redirect is not treated as success.
-          paths=(/ /blog /projects /resume /sitemap.xml /robots.txt)
-          for path in "${paths[@]}"; do
-            url="https://abdhilabs.com${path}"
+          # Cache-Control plus a query avoids a stale Cloudflare hit.
+          # curl does not follow redirects.
+          body="$(mktemp)"
+          trap 'rm -f "$body"' EXIT
+
+          fetch() {
+            local path="$1"
+            local url="https://abdhilabs.com${path}?deploy=${GITHUB_SHA}"
+            local attempt code ok
             ok=0
             for attempt in 1 2 3 4 5 6 7 8 9 10; do
-              code="$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' --max-redirs 0 --connect-timeout 5 --max-time 15 "${url}" || true)"
-              if [[ "${code}" == "200" ]]; then
-                echo "OK ${url}"
+              code="$(curl --silent --show-error --output "$body" --write-out '%{http_code}' \
+                --header 'Cache-Control: no-cache' \
+                --header 'Pragma: no-cache' \
+                --max-redirs 0 \
+                --connect-timeout 5 \
+                --max-time 15 \
+                "$url" || true)"
+              if [[ "$code" == "200" ]]; then
                 ok=1
                 break
               fi
               echo "attempt ${attempt}/10 ${url} -> ${code:-curl-failed}"
               sleep 5
             done
-            if [[ "${ok}" -ne 1 ]]; then
+            if [[ "$ok" -ne 1 ]]; then
               echo "Smoke test failed for ${url}; expected HTTP 200 without following redirects"
               exit 1
             fi
-          done
+          }
+
+          require_snippet() {
+            local snippet="$1"
+            local label="$2"
+            if ! grep -F -q -- "$snippet" "$body"; then
+              echo "Smoke test failed for ${label}; body missing: ${snippet}"
+              exit 1
+            fi
+          }
+
+          check_page() {
+            local path="$1"
+            shift
+            fetch "$path"
+            local snippet
+            for snippet in "$@"; do
+              require_snippet "$snippet" "$path"
+            done
+            echo "OK ${path}"
+          }
+
+          check_page "/" \
+            '<title>Abdhi | iOS Engineer</title>' \
+            '<link rel="canonical" href="https://abdhilabs.com/" />'
+          check_page "/blog" \
+            '<title>Writing | Abdhi</title>' \
+            '<link rel="canonical" href="https://abdhilabs.com/blog" />'
+          check_page "/projects" \
+            '<title>Projects | Abdhi</title>' \
+            '<link rel="canonical" href="https://abdhilabs.com/projects" />'
+          check_page "/resume" \
+            '<title>Resume | Abdhi</title>' \
+            '<link rel="canonical" href="https://abdhilabs.com/resume" />'
+          check_page "/sitemap.xml" '<urlset'
+          check_page "/robots.txt" 'Sitemap:'
