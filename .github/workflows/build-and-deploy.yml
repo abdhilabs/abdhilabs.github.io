@@ -129,7 +129,7 @@ jobs:
           EXPECTED_FINGERPRINT: ${{ secrets.DEPLOY_HOST_FINGERPRINT }}
         run: |
           set -euo pipefail
-          actual="$(ssh-keyscan -T 10 -p "$DEPLOY_PORT" -t ed25519 "$DEPLOY_HOST" 2>/dev/null | ssh-keygen -lf - -E sha256 | awk '{print $2}')"
+          actual="$(ssh-keyscan -T 10 -p "$DEPLOY_PORT" -t ecdsa "$DEPLOY_HOST" 2>/dev/null | ssh-keygen -lf - -E sha256 | awk '{print $2}')"
           test -n "$actual"
           if [[ "$actual" != "$EXPECTED_FINGERPRINT" ]]; then
             echo "Deployment host fingerprint mismatch. Observed: $actual"
