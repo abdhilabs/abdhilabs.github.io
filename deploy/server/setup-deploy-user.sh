@@ -111,6 +111,7 @@ fi
 options="${options},command=\"${INSTALL_PATH}\""
 printf '%s %s\n' "$options" "$key_line" > "/home/${DEPLOY_USER}/.ssh/authorized_keys"
 chown root:root "/home/${DEPLOY_USER}/.ssh/authorized_keys"
-chmod 600 "/home/${DEPLOY_USER}/.ssh/authorized_keys"
+# sshd reads this file as the target user, so it must be world-readable and root-owned.
+chmod 644 "/home/${DEPLOY_USER}/.ssh/authorized_keys"
 
 echo "setup-deploy-user.sh: ${DEPLOY_USER} ready (${INSTALL_PATH})"
