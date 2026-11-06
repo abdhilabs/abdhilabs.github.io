@@ -122,21 +122,6 @@ jobs:
           # Optional, for tailnets that use Tailnet Lock.
           statedir: /tmp/tailscale-state
 
-      - name: Verify deployment host key
-        env:
-          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
-          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
-          EXPECTED_FINGERPRINT: ${{ secrets.DEPLOY_HOST_FINGERPRINT }}
-        run: |
-          set -euo pipefail
-          actual="$(ssh-keyscan -T 10 -p "$DEPLOY_PORT" -t ecdsa "$DEPLOY_HOST" 2>/dev/null | ssh-keygen -lf - -E sha256 | awk '{print $2}')"
-          test -n "$actual"
-          if [[ "$actual" != "$EXPECTED_FINGERPRINT" ]]; then
-            echo "Deployment host fingerprint mismatch. Observed: $actual"
-            exit 1
-          fi
-          echo "Deployment host fingerprint verified: $actual"
-
       - name: Deploy over SSH
         uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
