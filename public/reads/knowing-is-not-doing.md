@@ -99,4 +99,4 @@ Pick the one thing. Do it before the day ends.
 
 ---
 
-Inspired: [How to turn knowledge into habits](https://x.com/charureadss/status/2125133551498838499), [@charureadss](https://x.com/charureadss)
+Inspired: [How to turn knowledge into habits](https://x.com/charureadss/status/2125133551498838499)
