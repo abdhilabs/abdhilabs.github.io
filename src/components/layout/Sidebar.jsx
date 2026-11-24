@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, PenLine, NotebookPen, Layers, FileText, Github, Twitter, Linkedin, Mail, Menu, X } from 'lucide-react';
+import { Home, PenLine, BookOpen, Layers, FileText, Github, Twitter, Linkedin, Mail, Menu, X } from 'lucide-react';
 import { profileData, navigationItems } from '../../data/mock';
 import { cn } from '../../lib/utils';
 import ThemeToggle from './ThemeToggle';
@@ -9,7 +9,7 @@ import { useSidebar } from '../../context/ThemeContext';
 const iconMap = {
   Home: Home,
   PenLine: PenLine,
-  NotebookPen: NotebookPen,
+  BookOpen: BookOpen,
   Layers: Layers,
   FileText: FileText
 };

@@ -6,6 +6,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const AGENT_SECTION = require('../src/data/agentSection.json');
 
 const SITE = 'https://abdhilabs.com';
 const BUILD_DIR = path.join(__dirname, '..', 'build');
@@ -28,12 +29,11 @@ const STATIC_PAGES = [
     output: path.join('blog', 'index.html'),
   },
   {
-    route: '/notes',
-    title: 'Notes | Abdhi',
-    description:
-      'Notes written by AI agents and curated by Abdhi. Summaries and commentary that credit their original authors; not Abdhi’s own writing.',
-    author: 'AI agents (curated by Abdhi)',
-    output: path.join('notes', 'index.html'),
+    route: `/${AGENT_SECTION.slug}`,
+    title: `${AGENT_SECTION.name} | Abdhi`,
+    description: AGENT_SECTION.description,
+    author: AGENT_SECTION.listAuthor,
+    output: path.join(AGENT_SECTION.slug, 'index.html'),
   },
   {
     route: '/projects',
@@ -90,10 +90,11 @@ function canonicalUrl(route) {
 }
 
 // Each section is a folder in build/ with its own posts.json.
-// "blog" is Abdhi's own writing; "notes" holds posts written by AI agents.
+// "blog" is Abdhi's own writing; the agent section (Reads) holds posts
+// written by an AI agent. Its name and route come from src/data/agentSection.json.
 const SECTIONS = [
   { dir: 'blog', titleSuffix: ' | Abdhi', agentOnly: false },
-  { dir: 'notes', titleSuffix: ' | Agent Notes · Abdhi', agentOnly: true },
+  { dir: AGENT_SECTION.slug, titleSuffix: AGENT_SECTION.titleSuffix, agentOnly: true },
 ];
 
 function isAgentAuthor(author) {
@@ -118,7 +119,7 @@ function loadPosts(section) {
       if (isAgent !== section.agentOnly) {
         throw new Error(
           isAgent
-            ? `${section.dir}/${filename} is marked author: agent; agent posts belong in notes/`
+            ? `${section.dir}/${filename} is marked author: agent; agent posts belong in ${AGENT_SECTION.slug}/`
             : `${section.dir}/${filename} must be marked author: agent`
         );
       }
@@ -131,7 +132,7 @@ function loadPosts(section) {
           (isAgent
             ? `${title} — written by an AI agent, curated by Abdhi.`
             : `${title} — by Abdhi, iOS Engineer.`),
-        author: isAgent ? 'AI agent (curated by Abdhi)' : 'Abdhi',
+        author: isAgent ? AGENT_SECTION.postAuthor : 'Abdhi',
         date: data.date || '',
         route: `/${section.dir}/${slug}`,
         output: path.join(section.dir, slug, 'index.html'),

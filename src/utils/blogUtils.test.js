@@ -4,7 +4,6 @@ import {
   getYear,
   parseFrontmatter,
   isAgentAuthor,
-  getSourceHandle,
 } from './blogUtils';
 
 describe('date-only strings', () => {
@@ -33,15 +32,10 @@ describe('frontmatter', () => {
   });
 });
 
-describe('attribution helpers', () => {
+describe('agent posts', () => {
   it('only treats author: agent as an agent post', () => {
     expect(isAgentAuthor('Agent')).toBe(true);
     expect(isAgentAuthor('Abdhi')).toBe(false);
     expect(isAgentAuthor(undefined)).toBe(false);
-  });
-
-  it('extracts the @handle from source_author', () => {
-    expect(getSourceHandle('charu (@charureadss)')).toBe('@charureadss');
-    expect(getSourceHandle('Jane Doe')).toBe('Jane Doe');
   });
 });

@@ -7,7 +7,8 @@ import Layout from "./components/layout/Layout";
 import UmamiAnalytics from "./components/analytics/UmamiAnalytics";
 import HomePage from "./pages/HomePage";
 import BlogPage from "./pages/BlogPage";
-import NotesPage from "./pages/NotesPage";
+import ReadsPage from "./pages/ReadsPage";
+import AGENT_SECTION from "./data/agentSection.json";
 import ProjectsPage from "./pages/ProjectsPage";
 import ResumePage from "./pages/ResumePage";
 
@@ -24,8 +25,8 @@ function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/blog" element={<BlogPage />} />
                 <Route path="/blog/:slug" element={<BlogPage />} />
-                <Route path="/notes" element={<NotesPage />} />
-                <Route path="/notes/:slug" element={<NotesPage />} />
+                <Route path={`/${AGENT_SECTION.slug}`} element={<ReadsPage />} />
+                <Route path={`/${AGENT_SECTION.slug}/:slug`} element={<ReadsPage />} />
                 <Route path="/projects" element={<ProjectsPage />} />
                 <Route path="/resume" element={<ResumePage />} />
               </Routes>

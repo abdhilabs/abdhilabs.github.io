@@ -8,12 +8,13 @@ import useBlogPosts from '../../hooks/useBlogPosts';
 import { cn } from '../../lib/utils';
 import { formatDate } from '../../utils/blogUtils';
 import AgentAttribution from './AgentAttribution';
+import AGENT_SECTION from '../../data/agentSection.json';
 
 const SITE_BASE = 'https://abdhilabs.com';
 
 // Honest author line for SEO metadata.
 export const postAuthorName = (post) =>
-  post.isAgent ? 'AI agent (curated by Abdhi)' : 'Abdhi';
+  post.isAgent ? AGENT_SECTION.postAuthor : 'Abdhi';
 
 // Fallback description when a post has no excerpt.
 export const postMetaDescription = (post) => {

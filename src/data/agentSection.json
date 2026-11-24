@@ -1,0 +1,13 @@
+{
+  "name": "Reads",
+  "slug": "reads",
+  "icon": "BookOpen",
+  "badge": "AI-written, curated by Abdhi",
+  "intro": "Longer reads that build on posts Abdhi found worth sharing. Written by an AI agent and curated by Abdhi.",
+  "description": "Reads written by an AI agent and curated by Abdhi. Longer pieces that build on posts worth sharing, with the original source credited.",
+  "titleSuffix": " | Reads · Abdhi",
+  "listAuthor": "AI agent (curated by Abdhi)",
+  "postAuthor": "AI agent (curated by Abdhi)",
+  "backLabel": "Back to reads",
+  "emptyText": "Select a read"
+}

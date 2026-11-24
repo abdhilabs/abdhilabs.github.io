@@ -73,13 +73,6 @@ export const isAgentAuthor = (author) => {
   return String(author || '').trim().toLowerCase() === 'agent';
 };
 
-// Pull a handle like "@charureadss" out of "charu (@charureadss)"
-export const getSourceHandle = (sourceAuthor) => {
-  const value = String(sourceAuthor || '').trim();
-  const match = value.match(/@[A-Za-z0-9_]+/);
-  return match ? match[0] : value;
-};
-
 // Generate slug from filename
 export const generateSlug = (filename) => {
   return filename.replace('.md', '');

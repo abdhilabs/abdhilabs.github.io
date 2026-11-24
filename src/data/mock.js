@@ -1,3 +1,5 @@
+import AGENT_SECTION from "./agentSection.json";
+
 // Mock data for the personal portfolio website
 
 export const profileData = {
@@ -115,7 +117,7 @@ export const projectsData = [
 export const navigationItems = [
   { name: "Home", path: "/", icon: "Home" },
   { name: "Blog", path: "/blog", icon: "PenLine" },
-  { name: "Notes", path: "/notes", icon: "NotebookPen" },
+  { name: AGENT_SECTION.name, path: `/${AGENT_SECTION.slug}`, icon: AGENT_SECTION.icon },
   { name: "Projects", path: "/projects", icon: "Layers" },
   { name: "Resume", path: "/resume", icon: "FileText" }
 ];

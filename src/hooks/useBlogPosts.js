@@ -10,7 +10,7 @@ import {
 } from '../utils/blogUtils';
 
 // Loads markdown posts listed in `/<section>/posts.json`.
-// `section` is "blog" for Abdhi's own writing and "notes" for agent-written posts.
+// `section` is "blog" for Abdhi's own writing and "reads" (see src/data/agentSection.json) for agent-written posts.
 const useBlogPosts = (section = 'blog') => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);

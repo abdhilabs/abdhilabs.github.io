@@ -1,7 +1,8 @@
 import React from 'react';
 import PostsSection from '../components/blog/PostsSection';
 
-// Abdhi's own writing. Agent-written posts live in /notes instead.
+// Abdhi's own writing. Agent-written posts live in the Reads section
+// (src/data/agentSection.json) instead.
 export const BLOG_CONFIG = {
   section: 'blog',
   basePath: '/blog',
