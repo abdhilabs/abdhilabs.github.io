@@ -7,7 +7,7 @@ source_author: charu (@charureadss)
 source_url: https://x.com/charureadss/status/2125133551498838499
 ---
 
-You can read ten articles about writing tests and still ship the next feature without one. You can watch a talk on Swift concurrency, nod along, and write another nested completion handler the same afternoon.
+You can read 10 articles about writing tests. You can still ship the next feature without one. You can watch a talk on Swift concurrency. You can still write another nested completion handler the same afternoon.
 
 Most of us have a long list of things we know we should do. The list is not the problem. The gap between knowing and doing is.
 
@@ -17,15 +17,15 @@ This piece is about that gap. Why it exists, why more reading rarely closes it, 
 
 Reading something useful gives you a small lift. An idea clicks, and for a moment it feels like you changed. You save the link, maybe share it, and move on.
 
-But nothing in your day is different yet. Your hands still reach for the same tools. Your calendar has the same shape. The idea lives in your head, and your behavior lives somewhere else.
+But nothing in your day is different yet. Your hands still reach for the same tools. Your calendar has the same shape. The idea lives in your head. Your behavior lives somewhere else.
 
-This is easy to miss, because learning is pleasant and safe. You cannot fail at reading an article. Changing what you do is the opposite. It is slow and a bit awkward, and you might do it badly at first. So it is natural to keep reading about change instead of making it.
+This is easy to miss, because learning is pleasant and safe. You cannot fail at reading an article. Changing what you do is the opposite. It is slow and a bit awkward. You might do it badly at first. So it is natural to keep reading about change instead of making it.
 
 A quick test: think of the last three ideas you were excited to learn. How many of them changed something you did this week?
 
 ## Old habits have evidence on their side
 
-A habit is a prediction that has been confirmed many times. "When I open this screen's code, I add the new logic at the bottom of the view controller." You have done it hundreds of times. It worked well enough. Nothing bad happened.
+A habit is a prediction you have confirmed many times. "When I open this screen's code, I add the new logic at the bottom of the view controller." You have done it hundreds of times. It worked well enough. Nothing bad happened.
 
 A new idea has none of that history. In your own experience, it is a claim without proof. When you are tired, busy, or close to a deadline, you pick the option with a track record. That is not weakness. It is a reasonable default.
 
@@ -35,7 +35,7 @@ This is why "I'll do it properly next time" so often fails. Next time looks a lo
 
 If information alone does not shift behavior, what does? Experience. In particular, experiences that go against what you expected.
 
-Say you expect that writing a test first will slow you down. Then you try it once on a small bug, and the test catches a second bug you did not know about. That is a data point the old habit cannot argue with. One data point will not change much, but it is a start.
+Say you expect that writing a test first will slow you down. Then you try it once on a small bug. The test catches a second bug you did not know about. That is a data point the old habit cannot argue with. One data point will not change much, but it is a start.
 
 A simple loop describes how this works:
 
@@ -51,13 +51,13 @@ Most people stop after step one. The real work is in steps two to five.
 
 A single good day is easy to dismiss. You wrote one test and it helped. Maybe you got lucky. Your old habit has years of history, and one counterexample does not outweigh that.
 
-Think about a new exercise routine. The first session proves very little. Ten sessions start to look like a pattern. After a few dozen, it is part of your week, and you no longer decide each time. The exact numbers do not matter. What matters is volume. The new behavior needs enough repetitions to build its own track record.
+Think about a new exercise routine. The first session proves very little. After 10 sessions, it starts to look like a pattern. After a few dozen, it is part of your week. You no longer decide each time. The exact numbers do not matter. What matters is volume. The new behavior needs enough repetitions to build its own track record.
 
 The same is true at work. The first time you profile a slow screen in Instruments before guessing at a fix, it feels slow and clumsy. By the tenth time, you open Instruments without thinking, because you have seen it save you hours.
 
 ## Start with one action today
 
-Here is a small protocol that works better than another reading list:
+Here is a small way that works better than another reading list:
 
 1. Pick one thing you have learned but never acted on.
 2. Do it once, today. Keep it small enough to finish.
@@ -78,18 +78,18 @@ Each of these fits in under an hour. Each gives you a real result to look at.
 
 ## Make the second time easier
 
-After the first action, the goal is to repeat it without needing motivation. A few things help.
+After the first action, the goal is to repeat it without needing motivation. A few things help:
 
-- **Attach it to something you already do.** "When I fix a bug, I write a test for it first." The existing habit becomes the trigger.
-- **Lower the cost.** Keep a test template ready. Save an Instruments template. Remove the setup steps that make you put it off.
-- **Make the result visible.** Write down what changed: a lower crash rate, a review comment you stopped getting, a screen that feels faster. Seeing the payoff is what makes a habit stick.
-- **Expect it to feel slower at first.** New habits are clumsy before they are fast. That feeling does not mean the old way was better.
+- Attach it to something you already do. "When I fix a bug, I write a test for it first." The existing habit becomes the trigger.
+- Lower the cost. Keep a test template ready. Save an Instruments template. Remove the setup steps that make you put it off.
+- Make the result visible. Write down what changed: a lower crash rate, a review comment you stopped getting, a screen that feels faster. Seeing the payoff is what makes a habit stick.
+- Expect it to feel slower at first. New habits are clumsy before they are fast. That feeling does not mean the old way was better.
 
 ## The same gap shows up in teams
 
-Teams have this gap too. A team can agree in a retro that pull requests are too large, and keep shipping large pull requests. Everyone knows. Nobody changes, because the old way is faster this week.
+Teams have this gap too. A team can agree in a retrospective that pull requests are too large. The same team can keep shipping large pull requests. Everyone knows. Nobody changes, because the old way is faster this week.
 
-The fix is the same as for one person: one concrete action, repeated. "This sprint, every pull request stays under 400 lines." Small enough to try, clear enough to check, and short enough to review at the next retro. After a few sprints, the new norm has its own evidence.
+The fix is the same as for one person: one concrete action, repeated. "This sprint, every pull request stays under 400 lines." Small enough to try, clear enough to check, and short enough to review at the next retrospective. After a few sprints, the new norm has its own evidence.
 
 ## The point
 
