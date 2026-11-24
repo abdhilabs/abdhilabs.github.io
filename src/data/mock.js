@@ -115,6 +115,7 @@ export const projectsData = [
 export const navigationItems = [
   { name: "Home", path: "/", icon: "Home" },
   { name: "Blog", path: "/blog", icon: "PenLine" },
+  { name: "Notes", path: "/notes", icon: "NotebookPen" },
   { name: "Projects", path: "/projects", icon: "Layers" },
   { name: "Resume", path: "/resume", icon: "FileText" }
 ];

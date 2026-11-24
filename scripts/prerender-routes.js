@@ -28,6 +28,14 @@ const STATIC_PAGES = [
     output: path.join('blog', 'index.html'),
   },
   {
+    route: '/notes',
+    title: 'Notes | Abdhi',
+    description:
+      'Notes written by AI agents and curated by Abdhi. Summaries and commentary that credit their original authors; not Abdhi’s own writing.',
+    author: 'AI agents (curated by Abdhi)',
+    output: path.join('notes', 'index.html'),
+  },
+  {
     route: '/projects',
     title: 'Projects | Abdhi',
     description:
@@ -81,12 +89,23 @@ function canonicalUrl(route) {
   return route === '/' ? `${SITE}/` : `${SITE}${route}`;
 }
 
-function loadPosts() {
-  const postsDir = path.join(BUILD_DIR, 'blog');
+// Each section is a folder in build/ with its own posts.json.
+// "blog" is Abdhi's own writing; "notes" holds posts written by AI agents.
+const SECTIONS = [
+  { dir: 'blog', titleSuffix: ' | Abdhi', agentOnly: false },
+  { dir: 'notes', titleSuffix: ' | Agent Notes · Abdhi', agentOnly: true },
+];
+
+function isAgentAuthor(author) {
+  return String(author || '').trim().toLowerCase() === 'agent';
+}
+
+function loadPosts(section) {
+  const postsDir = path.join(BUILD_DIR, section.dir);
   const listPath = path.join(postsDir, 'posts.json');
   const filenames = JSON.parse(fs.readFileSync(listPath, 'utf8'));
   if (!Array.isArray(filenames) || filenames.length === 0) {
-    throw new Error('public blog posts.json did not list any posts');
+    throw new Error(`public ${section.dir} posts.json did not list any posts`);
   }
 
   return filenames
@@ -95,13 +114,27 @@ function loadPosts() {
       const { data } = parseFrontmatter(raw);
       const slug = filename.replace(/\.md$/, '');
       const title = data.title || 'Untitled';
+      const isAgent = isAgentAuthor(data.author);
+      if (isAgent !== section.agentOnly) {
+        throw new Error(
+          isAgent
+            ? `${section.dir}/${filename} is marked author: agent; agent posts belong in notes/`
+            : `${section.dir}/${filename} must be marked author: agent`
+        );
+      }
       return {
         slug,
         title,
-        description: data.excerpt || `${title} — by Abdhi, iOS Engineer.`,
+        pageTitle: `${title}${section.titleSuffix}`,
+        description:
+          data.excerpt ||
+          (isAgent
+            ? `${title} — written by an AI agent, curated by Abdhi.`
+            : `${title} — by Abdhi, iOS Engineer.`),
+        author: isAgent ? 'AI agent (curated by Abdhi)' : 'Abdhi',
         date: data.date || '',
-        route: `/blog/${slug}`,
-        output: path.join('blog', slug, 'index.html'),
+        route: `/${section.dir}/${slug}`,
+        output: path.join(section.dir, slug, 'index.html'),
       };
     })
     .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
@@ -163,6 +196,15 @@ function applyMeta(template, page) {
     html = html.replace('<title>', `${canonical}\n    <title>`);
   }
 
+  if (page.author) {
+    const authorTag = `<meta name="author" content="${escapeHtml(page.author)}" />`;
+    if (/<meta name="author" content="[^"]*"[^>]*>/.test(html)) {
+      html = html.replace(/<meta name="author" content="[^"]*"[^>]*>/, authorTag);
+    } else {
+      html = html.replace('<title>', `${authorTag}\n    <title>`);
+    }
+  }
+
   return html;
 }
 
@@ -187,6 +229,9 @@ function assertPage(file, page) {
     `<meta name="twitter:description" content="${escapeHtml(page.description)}"`,
     `<meta property="og:type" content="${page.ogType || 'website'}"`,
   ];
+  if (page.author) {
+    expected.push(`<meta name="author" content="${escapeHtml(page.author)}"`);
+  }
 
   expected.forEach((snippet) => {
     if (!html.includes(snippet)) {
@@ -233,7 +278,11 @@ function main() {
   }
 
   const template = fs.readFileSync(templatePath, 'utf8');
-  const posts = loadPosts();
+  const postsBySection = SECTIONS.map((section) => ({
+    section,
+    posts: loadPosts(section),
+  }));
+  const posts = postsBySection.flatMap(({ posts: sectionPosts }) => sectionPosts);
   const pages = [
     ...STATIC_PAGES.map((page) => ({
       ...page,
@@ -242,7 +291,7 @@ function main() {
     })),
     ...posts.map((post) => ({
       ...post,
-      title: `${post.title} | Abdhi`,
+      title: post.pageTitle,
       url: canonicalUrl(post.route),
       ogType: 'article',
     })),
@@ -252,12 +301,14 @@ function main() {
   writeSitemap(pages);
   writeRobots();
 
-  const markdownLeft = fs
-    .readdirSync(path.join(BUILD_DIR, 'blog'))
-    .filter((name) => name.endsWith('.md'));
-  if (markdownLeft.length !== posts.length) {
-    throw new Error('Prerender removed or hid blog markdown files');
-  }
+  postsBySection.forEach(({ section, posts: sectionPosts }) => {
+    const markdownLeft = fs
+      .readdirSync(path.join(BUILD_DIR, section.dir))
+      .filter((name) => name.endsWith('.md'));
+    if (markdownLeft.length !== sectionPosts.length) {
+      throw new Error(`Prerender removed or hid ${section.dir} markdown files`);
+    }
+  });
 
   console.log(`Prerendered ${pages.length} routes`);
   pages.forEach((page) => console.log(`  ${page.url} -> ${page.output}`));
