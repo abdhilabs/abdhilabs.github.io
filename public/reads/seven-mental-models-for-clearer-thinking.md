@@ -145,4 +145,4 @@ The test is simple. Does one of these change how you handle your next bug, revie
 
 ---
 
-Inspired by [Mental models that make you sharper than 95% of people in the room](https://x.com/shipranotes/status/2122639602871845273) by [@shipranotes](https://x.com/shipranotes).
+Inspired: [Mental models that make you sharper than 95% of people in the room](https://x.com/shipranotes/status/2122639602871845273), [@shipranotes](https://x.com/shipranotes)
